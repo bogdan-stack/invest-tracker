@@ -622,6 +622,14 @@ video {
   padding: 0.75rem;
 }
 
+.align-middle {
+  vertical-align: middle;
+}
+
+.align-text-bottom {
+  vertical-align: text-bottom;
+}
+
 .font-bold {
   font-weight: 700;
 }
