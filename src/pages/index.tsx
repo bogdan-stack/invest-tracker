@@ -1,11 +1,11 @@
+/* eslint-disable */
 import { type NextPage } from "next";
 import { useState } from "react";
 import Head from "next/head";
 import { SignIn, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import { Stack, Card, CardHeader, CardBody, Text, StackDivider, Heading, HStack, Button} from "@chakra-ui/react";
-
-
 import { api } from "~/utils/api";
+
 
 const Home: NextPage = () => {
 
@@ -14,12 +14,14 @@ const Home: NextPage = () => {
 
   const {data} = api.example.getAll.useQuery();
 
-  const [info, setInfo] = useState<string>('')
+  const [infoUfVal, setInfo] = useState<string>('')
+  const [infoFoName, setInfoFoName] = useState<string>('')
 
   const getInfo = async () => {
     const res = await fetch('http://localhost:3000/api/trpc/getInfo')
-    const {info} = await res.json()
-    setInfo(info)
+    const {infoUfVal, infoFoName} = await res.json()
+    setInfo(infoUfVal)
+    setInfoFoName(infoFoName)
   }
 
   return (
@@ -63,7 +65,8 @@ const Home: NextPage = () => {
           <CardBody>
           <Stack divider={<StackDivider />} spacing='3'>
           <HStack justifyContent='space-between' textAlign='center'>
-            <Text textColor='black' fontWeight='medium' > {info}</Text>
+            <Text textColor='black' fontWeight='medium' > {infoFoName }</Text>
+            <Text textColor='gray.500' > {infoUfVal} RON</Text>
           </HStack>
           <Button colorScheme='red' alignSelf='center'onClick={getInfo}>Live Feed</Button>
           </Stack>

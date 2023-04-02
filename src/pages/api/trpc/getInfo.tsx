@@ -10,11 +10,12 @@ const getInfo = async (req: NextApiRequest, res: NextApiResponse) => {
     const dom = new JSDOM(html)
     const document = dom.window.document
 
-    const info = document.querySelector('.rownr25').textContent
+    const infoUfVal = document.querySelector('.rownr25 .valoare_unitara').textContent
+    const infoFoName = document.querySelector('.rownr25 .denumirefond').textContent
 
-    console.log('Live info', info)
-    
-    res.status(200).json({ info })
+    console.log('Live info', infoUfVal)
+
+    res.status(200).json({ infoUfVal, infoFoName })
 }
 
 export default getInfo
