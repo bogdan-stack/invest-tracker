@@ -1,6 +1,5 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
 import { SignIn, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import { Stack, Card, CardHeader, CardBody, Text, StackDivider, Heading, HStack} from "@chakra-ui/react";
 
@@ -40,9 +39,9 @@ const Home: NextPage = () => {
           <CardBody>
           <Stack divider={<StackDivider />} spacing='4'>
           {data?.map((post) => (
-          <HStack justifyContent='space-between'>
-            <Text textColor='black' fontWeight='medium' key={post.id}> {post.investAmount}</Text>
-            <Text textColor='gray.500'> {post.fondName} </Text>
+          <HStack justifyContent='space-between'key={post.id}>
+            <Text textColor='black' fontWeight='medium' > {post.investAmount}</Text>
+            <Text textColor='gray.500' > {post.fondName} </Text>
             <Text textColor='gray.500'> {post.createdAt.toDateString()} </Text>
           </HStack>))}
           </Stack>
