@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { NextApiRequest, NextApiResponse } from "next";
 
 const jsdom = require("jsdom");
