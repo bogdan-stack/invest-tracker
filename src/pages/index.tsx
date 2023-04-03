@@ -1,4 +1,6 @@
 /* eslint-disable */
+/* elint-disable */
+
 import { type NextPage } from "next";
 import { useState } from "react";
 import Head from "next/head";
@@ -124,8 +126,8 @@ const Home: NextPage = () => {
                 <Text textColor='whatsapp.500' fontSize='15' fontWeight='medium'>
                   Valoarea totală a investiției:
                 </Text>
-                <Text key={item._sum.nrUf} textColor='whatsapp.400' fontSize='2xl' fontWeight='medium'>
-                  {(parseFloat(item._sum.nrUf?.toFixed(4)) * parseFloat(infoUfVal2).toFixed(4)).toFixed(4)} RON </Text>
+                <Text key={item._sum?.nrUf} textColor='whatsapp.400' fontSize='2xl' fontWeight='medium'>
+                {((Number(item._sum?.nrUf) ?? 0) * (Number(infoUfVal2) ?? 0)).toFixed(4)} RON </Text>
                   </>
                 ))}
             </VStack>
