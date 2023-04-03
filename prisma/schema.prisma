@@ -15,8 +15,9 @@ model Post {
     createdAt DateTime @default(now())
 
     investAt   DateTime @default(now())
-    investAmount Int     @default(0)
-    ufValue      Int     @default(0)
+    investAmount Float     @default(0)
+    ufValue      Float     @default(0)
+    nrUf         Float     @default(0)
     fondName     String  @default("")
 
     userId       String

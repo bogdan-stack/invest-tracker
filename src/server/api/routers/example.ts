@@ -13,4 +13,16 @@ export const exampleRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.post.findMany();
   }),
+  getSumSim: publicProcedure.query(({ ctx }) => {
+    return ctx.prisma.post.groupBy({
+      by: ['fondName'],
+        where: {
+          fondName: 'BRD Simfonia',
+        },
+        _sum: {
+          investAmount: true,
+          nrUf: true
+        }
+    });
+  }),
 });
