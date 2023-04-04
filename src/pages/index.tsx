@@ -76,6 +76,8 @@ const Home: NextPage = () => {
           </CardHeader>
           <CardBody>
           <Stack divider={<StackDivider />} spacing='3'>
+          { infoFoName && (
+          <>
           <HStack justifyContent='space-between' textAlign='center'>
             <VStack alignItems='flex-start'spacing={0}>
               <Text textColor='black' fontWeight='medium' > {infoFoName}</Text>
@@ -90,6 +92,7 @@ const Home: NextPage = () => {
             </VStack>
             <Text textColor='gray.500' > {parseFloat(infoUfVal2)} RON</Text>
           </HStack>
+          </>)}
           <Button colorScheme='red' alignSelf='center'onClick={getInfo}>Live Feed</Button>
           </Stack>
           </CardBody>
@@ -120,8 +123,8 @@ const Home: NextPage = () => {
               </>
                 ))}
             </VStack>
+            <Card alignItems='center' align='flex-start' backgroundColor='whatsapp.500' borderRadius='lg'>
             <VStack alignItems='center' align='center' spacing={0}>
-             <Card alignItems='center' align='flex-start' backgroundColor='whatsapp.500' borderRadius='lg'>
              {sumSimfonia?.map((item) => {
                const nrUf = Number(item._sum?.nrUf).toFixed(4) ?? 0;
                const ufVal2 = Number(infoUfVal2).toFixed(4) ?? 0;
@@ -145,8 +148,8 @@ const Home: NextPage = () => {
                  </>
                );
              })}
-           </Card>
             </VStack>
+            </Card>
             </HStack>
             </Stack>
             </CardBody>
