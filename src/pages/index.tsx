@@ -5,7 +5,7 @@ import { type NextPage } from "next";
 import { useState } from "react";
 import Head from "next/head";
 import { SignIn, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
-import { Stack, Card, CardHeader, CardBody, Text, StackDivider, Heading, HStack, Button, VStack, Icon } from "@chakra-ui/react";
+import { Stack, Card, CardHeader, CardBody, Text, StackDivider, Heading, HStack, Button, VStack, Icon} from "@chakra-ui/react";
 import { PlusSquareIcon } from '@chakra-ui/icons'
 import { api } from "~/utils/api";
 
@@ -133,7 +133,7 @@ const Home: NextPage = () => {
                  Profit :  
                 </Text>
                 <Text textColor='white' fontSize='2xl' fontWeight='medium'>
-                {((Number(item._sum?.nrUf) ?? 0) * (Number(infoUfVal2) ?? 0)).toFixed(4)-Number(item._sum?.investAmount)}
+                {((Number(item._sum?.nrUf) ?? 0) * (Number(infoUfVal2) ?? 0)).toFixed(4)}{-Number(item._sum?.investAmount)}
                 </Text>
                   </>
                 ))}
