@@ -121,23 +121,31 @@ const Home: NextPage = () => {
                 ))}
             </VStack>
             <VStack alignItems='center' align='center' spacing={0}>
-              <Card alignItems='center' align='flex-start' backgroundColor='whatsapp.500' borderRadius='lg'>
-              {sumSimfonia?.map((item) => (
-                <>
-                <Text textColor='white' fontSize='15' fontWeight='medium'>
-                  Valoarea totală a investiției:
-                </Text>
-                <Text key={item._sum?.nrUf} textColor='white' fontSize='2xl' fontWeight='medium'>
-                {((Number(item._sum?.nrUf) ?? 0) * (Number(infoUfVal2) ?? 0)).toFixed(4)} RON </Text>
-                <Text textColor='white' fontSize='15'fontWeight='medium'>
-                 Profit :  
-                </Text>
-                <Text textColor='white' fontSize='2xl' fontWeight='medium'>
-                {(((Number(item._sum?.nrUf) ?? 0) * (Number(infoUfVal2) ?? 0)).toFixed(4))-Number(item._sum?.investAmount)}
-                </Text>
-                  </>
-                ))}
-                </Card>
+             <Card alignItems='center' align='flex-start' backgroundColor='whatsapp.500' borderRadius='lg'>
+             {sumSimfonia?.map((item) => {
+               const nrUf = Number(item._sum?.nrUf) ?? 0;
+               const ufVal2 = Number(infoUfVal2) ?? 0;
+               const investAmount = Number(item._sum?.investAmount) ?? 0;
+               const totalInvestment = (nrUf * ufVal2).toFixed(4);
+               const profit = (totalInvestment - investAmount).toFixed(4);
+               return (
+                 <>
+                   <Text textColor='white' fontSize='15' fontWeight='medium'>
+                     Valoarea totală a investiției:
+                   </Text>
+                   <Text key={item._sum?.nrUf} textColor='white' fontSize='2xl' fontWeight='medium'>
+                     {totalInvestment} RON
+                   </Text>
+                   <Text textColor='white' fontSize='15' fontWeight='medium'>
+                     Profit:
+                   </Text>
+                   <Text textColor='white' fontSize='2xl' fontWeight='medium'>
+                     {profit}
+                   </Text>
+                 </>
+               );
+             })}
+           </Card>
             </VStack>
             </HStack>
             </Stack>
