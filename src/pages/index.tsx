@@ -78,14 +78,14 @@ const Home: NextPage = () => {
           <Stack divider={<StackDivider />} spacing='3'>
           { infoFoName && (
           <>
-          <HStack justifyContent='space-between' textAlign='center'>
+          <HStack justifyContent='space-between' textAlign='left'>
             <VStack alignItems='flex-start'spacing={0}>
               <Text textColor='black' fontWeight='medium' > {infoFoName}</Text>
               <Text textColor='gray.500' fontSize={14}>Valoare unitară titlu</Text>
             </VStack>
             <Text textColor='gray.500' > {parseFloat(infoUfVal)} RON</Text>
           </HStack>
-          <HStack justifyContent='space-between' textAlign='center'>
+          <HStack justifyContent='space-between' textAlign='left'>
             <VStack alignItems='flex-start'spacing={0}>
             <Text textColor='black' fontWeight='medium' > {infoFoName2}</Text>
             <Text textColor='gray.500' fontSize={14}>Valoare unitară titlu</Text>
