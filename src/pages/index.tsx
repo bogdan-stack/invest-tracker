@@ -133,7 +133,7 @@ const Home: NextPage = () => {
                  Profit :  
                 </Text>
                 <Text textColor='white' fontSize='2xl' fontWeight='medium'>
-                {((Number(item._sum?.nrUf) ?? 0) * (Number(infoUfVal2) ?? 0)).toFixed(4)}{-Number(item._sum?.investAmount)}
+                {(((Number(item._sum?.nrUf) ?? 0) * (Number(infoUfVal2) ?? 0)).toFixed(4))-Number(item._sum?.investAmount)}
                 </Text>
                   </>
                 ))}
