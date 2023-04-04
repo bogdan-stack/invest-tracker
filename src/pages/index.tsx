@@ -127,7 +127,7 @@ const Home: NextPage = () => {
                const ufVal2 = Number(infoUfVal2).toFixed(4) ?? 0;
                const investAmount = Number(item._sum?.investAmount) ?? 0;
                const totalInvestment = (Number(parseFloat(nrUf)) * Number(parseFloat(ufVal2))).toFixed(4);
-               const profit = (parseFloat(totalInvestment).toFixed(4) - investAmount).toFixed(4);
+               const profit = (Number(parseFloat(totalInvestment).toFixed(4)) - investAmount).toFixed(4);
                return (
                  <>
                    <Text textColor='white' fontSize='15' fontWeight='medium'>
