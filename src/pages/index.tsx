@@ -121,7 +121,7 @@ const Home: NextPage = () => {
                 ))}
             </VStack>
             <VStack alignItems='center' align='center' spacing={0}>
-              <Box alignItems='center' align='felex-start' backgroundColor='whatsapp.500' borderRadius='lg'>
+              <Box alignItems='center' align='flex-start' backgroundColor='whatsapp.500' borderRadius='lg'>
               {sumSimfonia?.map((item) => (
                 <>
                 <Text textColor='white' fontSize='15' fontWeight='medium'>
