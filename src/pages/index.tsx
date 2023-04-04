@@ -5,7 +5,7 @@ import { type NextPage } from "next";
 import { useState } from "react";
 import Head from "next/head";
 import { SignIn, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
-import { Stack, Card, CardHeader, CardBody, Text, StackDivider, Heading, HStack, Button, VStack, Icon, Box} from "@chakra-ui/react";
+import { Stack, Card, CardHeader, CardBody, Text, StackDivider, Heading, HStack, Button, VStack, Icon } from "@chakra-ui/react";
 import { PlusSquareIcon } from '@chakra-ui/icons'
 import { api } from "~/utils/api";
 
@@ -121,7 +121,7 @@ const Home: NextPage = () => {
                 ))}
             </VStack>
             <VStack alignItems='center' align='center' spacing={0}>
-              <Box alignItems='center' align='flex-start' backgroundColor='whatsapp.500' borderRadius='lg'>
+              <Card alignItems='center' align='flex-start' backgroundColor='whatsapp.500' borderRadius='lg'>
               {sumSimfonia?.map((item) => (
                 <>
                 <Text textColor='white' fontSize='15' fontWeight='medium'>
@@ -137,7 +137,7 @@ const Home: NextPage = () => {
                 </Text>
                   </>
                 ))}
-                </Box>
+                </Card>
             </VStack>
             </HStack>
             </Stack>
