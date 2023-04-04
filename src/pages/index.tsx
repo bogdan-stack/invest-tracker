@@ -123,11 +123,11 @@ const Home: NextPage = () => {
             <VStack alignItems='center' align='center' spacing={0}>
              <Card alignItems='center' align='flex-start' backgroundColor='whatsapp.500' borderRadius='lg'>
              {sumSimfonia?.map((item) => {
-               const nrUf = Number(item._sum?.nrUf) ?? 0;
-               const ufVal2 = Number(infoUfVal2) ?? 0;
+               const nrUf = Number(item._sum?.nrUf).toFixed(4) ?? 0;
+               const ufVal2 = Number(infoUfVal2).toFixed(4) ?? 0;
                const investAmount = Number(item._sum?.investAmount) ?? 0;
-               const totalInvestment = (nrUf * ufVal2).toFixed(4);
-               const profit = (totalInvestment - investAmount).toFixed(4);
+               const totalInvestment = (parseFloat(nrUf) * parseFloat(ufVal2)).toFixed(4);
+               const profit = (parseFloat(totalInvestment).toFixed(4) - investAmount).toFixed(4);
                return (
                  <>
                    <Text textColor='white' fontSize='15' fontWeight='medium'>
@@ -140,7 +140,7 @@ const Home: NextPage = () => {
                      Profit:
                    </Text>
                    <Text textColor='white' fontSize='2xl' fontWeight='medium'>
-                     {profit}
+                     {profit} RON
                    </Text>
                  </>
                );
