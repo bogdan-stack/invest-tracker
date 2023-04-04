@@ -5,7 +5,7 @@ import { type NextPage } from "next";
 import { useState } from "react";
 import Head from "next/head";
 import { SignIn, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
-import { Stack, Card, CardHeader, CardBody, Text, StackDivider, Heading, HStack, Button, VStack, Icon} from "@chakra-ui/react";
+import { Stack, Card, CardHeader, CardBody, Text, StackDivider, Heading, HStack, Button, VStack, Icon, Box} from "@chakra-ui/react";
 import { PlusSquareIcon } from '@chakra-ui/icons'
 import { api } from "~/utils/api";
 
@@ -115,21 +115,29 @@ const Home: NextPage = () => {
               <Text key={item.fondName} textColor='black' fontSize='15' fontWeight='medium'>
                Nr. de U.F. deținute:</Text>
               <Text textColor='gray.500' fontSize='2xl'>
-                {item._sum.nrUf?.toFixed(4)} BUC
+                {item._sum.nrUf?.toFixed(4)} U.F.
               </Text>
               </>
                 ))}
             </VStack>
-            <VStack alignItems='center' align='flex-start' spacing={0}>
+            <VStack alignItems='center' align='center' spacing={0}>
+              <Box alignItems='center' align='felex-start' backgroundColor='whatsapp.500' borderRadius='lg'>
               {sumSimfonia?.map((item) => (
                 <>
-                <Text textColor='whatsapp.500' fontSize='15' fontWeight='medium'>
+                <Text textColor='white' fontSize='15' fontWeight='medium'>
                   Valoarea totală a investiției:
                 </Text>
-                <Text key={item._sum?.nrUf} textColor='whatsapp.400' fontSize='2xl' fontWeight='medium'>
+                <Text key={item._sum?.nrUf} textColor='white' fontSize='2xl' fontWeight='medium'>
                 {((Number(item._sum?.nrUf) ?? 0) * (Number(infoUfVal2) ?? 0)).toFixed(4)} RON </Text>
+                <Text textColor='white' fontSize='15'fontWeight='medium'>
+                 Profit :  
+                </Text>
+                <Text textColor='white' fontSize='2xl' fontWeight='medium'>
+                {((Number(item._sum?.nrUf) ?? 0) * (Number(infoUfVal2) ?? 0)).toFixed(4)-Number(item._sum?.investAmount)}
+                </Text>
                   </>
                 ))}
+                </Box>
             </VStack>
             </HStack>
             </Stack>
