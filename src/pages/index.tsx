@@ -123,7 +123,7 @@ const Home: NextPage = () => {
               </>
                 ))}
             </VStack>
-            <Card alignItems='center' align='flex-start' backgroundColor='whatsapp.500' borderRadius='lg'>
+            { infoUfVal2 && (<Card alignItems='center' align='flex-start' backgroundColor='whatsapp.500' borderRadius='lg'>
             <VStack alignItems='center' align='center' spacing={0}>
              {sumSimfonia?.map((item) => {
                const nrUf = Number(item._sum?.nrUf).toFixed(4) ?? 0;
@@ -149,7 +149,7 @@ const Home: NextPage = () => {
                );
              })}
             </VStack>
-            </Card>
+            </Card>)}
             </HStack>
             </Stack>
             </CardBody>
