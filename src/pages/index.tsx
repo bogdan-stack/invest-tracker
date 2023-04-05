@@ -2,7 +2,7 @@
 /* elint-disable */
 
 import { type NextPage } from "next";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import Head from "next/head";
 import { SignIn, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import {
@@ -39,7 +39,6 @@ const Home: NextPage = () => {
   const [liveSwitch, setLiveSwitch] = useState<boolean>(true);
 
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const firstField = useRef()
 
   const user = useUser();
   if (!user) return null;
@@ -359,7 +358,6 @@ const Home: NextPage = () => {
               <Drawer
                 isOpen={isOpen}
                 placement='bottom'
-                initialFocusRef={firstField}
                 onClose={onClose}
               >
                 <DrawerOverlay />
@@ -373,7 +371,6 @@ const Home: NextPage = () => {
                       <Box>
                         <FormLabel htmlFor='username'>Name</FormLabel>
                         <Input
-                          ref={firstField}
                           id='username'
                           placeholder='Please enter user name'
                         />
