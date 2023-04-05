@@ -16,7 +16,6 @@ import {
   HStack,
   Button,
   VStack,
-  Icon,
   Box,
   Skeleton,
   Drawer,
@@ -28,7 +27,10 @@ import {
   DrawerCloseButton,
   useDisclosure,
   FormLabel,
-  Input
+  Input,
+  Select,
+  Avatar,
+  AvatarBadge,
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { api } from "~/utils/api";
@@ -40,7 +42,7 @@ const Home: NextPage = () => {
   const [infoFoName2, setInfoFoName2] = useState<string>("");
   const [liveSwitch, setLiveSwitch] = useState<boolean>(true);
 
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const user = useUser();
   if (!user) return null;
@@ -49,15 +51,16 @@ const Home: NextPage = () => {
   const { data: sumSimfonia } = api.example.getSumSim.useQuery();
 
   const getInfo = async () => {
-    setLiveSwitch(false)
+    setLiveSwitch(false);
     const res = await fetch('https://invest-tracker-nine.vercel.app/api/trpc/getInfo')
     //const res = await fetch("http://localhost:3000/api/trpc/getInfo");
-    const { infoUfVal, infoFoName, infoUfVal2, infoFoName2, liveSwitch } = await res.json();
+    const { infoUfVal, infoFoName, infoUfVal2, infoFoName2, liveSwitch } =
+      await res.json();
     setInfo(infoUfVal);
     setInfoFoName(infoFoName);
     setInfo2(infoUfVal2);
     setInfoFoName2(infoFoName2);
-    setLiveSwitch(true)
+    setLiveSwitch(true);
   };
 
   return (
@@ -71,26 +74,12 @@ const Home: NextPage = () => {
         <Stack>
           <HStack
             display="flex"
-            position='sticky'
+            position="sticky"
             justifyContent="space-between"
             padding="3"
             paddingBottom={1}
             paddingTop={1}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={0.5}
-              stroke="red"
-              className="h-10 w-10"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"
-              />
-            </svg>
             {!user.isSignedIn && (
               <SignInButton>
                 <Button
@@ -104,6 +93,12 @@ const Home: NextPage = () => {
                 </Button>
               </SignInButton>
             )}
+            {!!user.isSignedIn && (
+              <Avatar size="sm" bg="red.500">
+                <AvatarBadge boxSize="1.25em" bg="green.500" />
+              </Avatar>
+            )}
+
             {!!user.isSignedIn && (
               <Text padding={2} textColor="black" fontWeight="bold">
                 Hello Bogdan!
@@ -125,7 +120,7 @@ const Home: NextPage = () => {
           </HStack>
         </Stack>
         <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
-        <Stack backgroundColor="gray.100" display='flex' flexDirection='column'>
+        <Stack backgroundColor="gray.100" display="flex" flexDirection="column">
           <Stack justifyContent="center" p={3}>
             <Card w="99%" alignSelf="center" backgroundColor="white">
               <CardHeader
@@ -138,32 +133,35 @@ const Home: NextPage = () => {
               </CardHeader>
               {!data && (
                 <Stack padding={4}>
-                  <Skeleton height='20px' />
-                  <Skeleton height='20px' />
-                  <Skeleton height='20px' />
+                  <Skeleton height="15px" />
+                  <Skeleton height="15px" />
+                  <Skeleton height="15px" />
+                  <Skeleton height="15px" />
                 </Stack>
               )}
-              {data && (<CardBody>
-                <Stack divider={<StackDivider />} spacing="3">
-                  {data?.map((post) => (
-                    <HStack
-                      justifyContent="space-between"
-                      textAlign="center"
-                      key={post.id}
-                    >
-                      <Text textColor="black" fontWeight="medium">
-                        {" "}
-                        {post.investAmount} RON
-                      </Text>
-                      <Text textColor="gray.500"> {post.fondName} </Text>
-                      <Text textColor="gray.500">
-                        {" "}
-                        {post.createdAt.toDateString()}{" "}
-                      </Text>
-                    </HStack>
-                  ))}
-                </Stack>
-              </CardBody>)}
+              {data && (
+                <CardBody>
+                  <Stack divider={<StackDivider />} spacing="3">
+                    {data?.map((post) => (
+                      <HStack
+                        justifyContent="space-between"
+                        textAlign="center"
+                        key={post.id}
+                      >
+                        <Text textColor="black" fontWeight="medium">
+                          {" "}
+                          {post.investAmount} RON
+                        </Text>
+                        <Text textColor="gray.500"> {post.fondName} </Text>
+                        <Text textColor="gray.500">
+                          {" "}
+                          {post.createdAt.toDateString()}{" "}
+                        </Text>
+                      </HStack>
+                    ))}
+                  </Stack>
+                </CardBody>
+              )}
             </Card>
             <Card w="99%" alignSelf="center" backgroundColor="white">
               <CardHeader
@@ -177,16 +175,21 @@ const Home: NextPage = () => {
               <CardBody>
                 <Stack divider={<StackDivider />} spacing="3">
                   {liveSwitch == false && (
-                    <Stack padding={4}>
-                      <Skeleton height='20px' />
-                      <Skeleton height='20px' />
-                      <Skeleton height='20px' />
+                    <Stack padding={0}>
+                      <Skeleton height="15px" />
+                      <Skeleton height="15px" />
+                      <Skeleton height="15px" />
+                      <Skeleton height="15px" />
                     </Stack>
                   )}
                   {liveSwitch == true && (
                     <>
-                      <HStack justifyContent="space-between" textAlign="left" display={infoFoName ? "flex" : "none"}>
-                        <VStack alignItems="flex-start" spacing={0} >
+                      <HStack
+                        justifyContent="space-between"
+                        textAlign="left"
+                        display={infoFoName ? "flex" : "none"}
+                      >
+                        <VStack alignItems="flex-start" spacing={0}>
                           <Text textColor="black" fontWeight="medium">
                             {" "}
                             {infoFoName}
@@ -200,7 +203,11 @@ const Home: NextPage = () => {
                           {parseFloat(infoUfVal)} RON
                         </Text>
                       </HStack>
-                      <HStack justifyContent="space-between" textAlign="left" display={infoFoName ? "flex" : "none"}>
+                      <HStack
+                        justifyContent="space-between"
+                        textAlign="left"
+                        display={infoFoName ? "flex" : "none"}
+                      >
                         <VStack alignItems="flex-start" spacing={0}>
                           <Text textColor="black" fontWeight="medium">
                             {" "}
@@ -217,10 +224,7 @@ const Home: NextPage = () => {
                       </HStack>
                     </>
                   )}
-                  <Button
-                    colorScheme="red"
-                    onClick={getInfo}
-                  >
+                  <Button colorScheme="red" onClick={getInfo}>
                     Live Feed
                   </Button>
                 </Stack>
@@ -235,12 +239,14 @@ const Home: NextPage = () => {
               >
                 <Heading fontSize="md">Your stats</Heading>
               </CardHeader>
-              {!data && (<Stack padding={4}>
-                <Skeleton height='20px' />
-                <Skeleton height='20px' />
-                <Skeleton height='20px' />
-                <Skeleton height='20px' />
-              </Stack>)}
+              {!data && (
+                <Stack padding={4}>
+                  <Skeleton height="15px" />
+                  <Skeleton height="15px" />
+                  <Skeleton height="15px" />
+                  <Skeleton height="15px" />
+                </Stack>
+              )}
               <CardBody>
                 <Stack divider={<StackDivider />} spacing="3">
                   <HStack justifyContent="space-between" textAlign="center">
@@ -345,42 +351,62 @@ const Home: NextPage = () => {
               </CardBody>
             </Card>
           </Stack>
-          <HStack justifyContent="center" backgroundColor='white' p={1} dropShadow='2xl' marginTop='auto'>
+          <HStack
+            justifyContent="center"
+            backgroundColor="white"
+            p={1}
+            dropShadow="2xl"
+            marginTop="auto"
+          >
             <VStack>
-              <Button leftIcon={<AddIcon />} colorScheme='red' onClick={onOpen}>
+              <Button leftIcon={<AddIcon />} colorScheme="red" onClick={onOpen}>
                 New Investment
               </Button>
-              <Drawer
-                isOpen={isOpen}
-                placement='bottom'
-                onClose={onClose}
-              >
+              <Drawer isOpen={isOpen} placement="bottom" onClose={onClose}>
                 <DrawerOverlay />
                 <DrawerContent>
                   <DrawerCloseButton />
-                  <DrawerHeader borderBottomWidth='1px'>
+                  <DrawerHeader borderBottomWidth="1px">
                     Make New Investment
                   </DrawerHeader>
                   <DrawerBody>
-                    <Stack spacing='24px'>
+                    <Stack spacing="24px">
                       <Box>
-                        <FormLabel htmlFor='investAmount'>Amount</FormLabel>
+                        <FormLabel htmlFor="investDate">Date</FormLabel>
                         <Input
-                          id='investAmount'
-                          placeholder='Please enter the investment amount'
+                          id="investDate"
+                          type="date"
+                          focusBorderColor="black" />
+                      </Box>
+                      <Box>
+                        <FormLabel htmlFor="investAmount">Amount</FormLabel>
+                        <Input
+                          focusBorderColor="black"
+                          id="investAmount"
+                          type="number"
+                          placeholder="Please enter the investment amount"
                         />
+                      </Box>
+                      <Box>
+                        <FormLabel htmlFor="investFond">Found</FormLabel>
+                        <Select
+                        id="investFond"
+                        placeholder="Select a found"
+                        focusBorderColor="black">
+                          <option value="BRD Simfonia">BRD Simfonia</option>
+                          <option value="BRD Actiuni">BRD Actiuni</option>
+                        </Select>
                       </Box>
                     </Stack>
                   </DrawerBody>
-                  <DrawerFooter borderTopWidth='1px'>
-                    <Button variant='outline' mr={3} onClick={onClose}>
+                  <DrawerFooter borderTopWidth="1px">
+                    <Button variant="outline" mr={3} onClick={onClose}>
                       Cancel
                     </Button>
-                    <Button colorScheme='red'>Invest</Button>
+                    <Button colorScheme="red">Invest</Button>
                   </DrawerFooter>
                 </DrawerContent>
               </Drawer>
-
             </VStack>
           </HStack>
         </Stack>
