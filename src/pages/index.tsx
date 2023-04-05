@@ -122,7 +122,7 @@ const Home: NextPage = () => {
                 <Heading fontSize="md">Investments</Heading>
               </CardHeader>
               {!data && (
-                <Stack>
+                <Stack padding={2}>
                   <Skeleton height='20px' />
                   <Skeleton height='20px' />
                   <Skeleton height='20px' />
