@@ -219,10 +219,6 @@ const Home: NextPage = () => {
                   )}
                   <Button
                     colorScheme="red"
-                    fontSize='sm'
-                    padding="1.5"
-                    height="-webkit-fit-content"
-                    alignSelf="center"
                     onClick={getInfo}
                   >
                     Live Feed
@@ -351,9 +347,6 @@ const Home: NextPage = () => {
           </Stack>
           <HStack justifyContent="center" backgroundColor='white' p={1} dropShadow='2xl' marginTop='auto'>
             <VStack>
-              <Text textColor="gray.500" fontSize={14} lineHeight={1}>
-                Add Investment
-              </Text>
               <Button leftIcon={<AddIcon />} colorScheme='red' onClick={onOpen}>
                 New Investment
               </Button>
@@ -371,10 +364,10 @@ const Home: NextPage = () => {
                   <DrawerBody>
                     <Stack spacing='24px'>
                       <Box>
-                        <FormLabel htmlFor='username'>Name</FormLabel>
+                        <FormLabel htmlFor='investAmount'>Amount</FormLabel>
                         <Input
-                          id='username'
-                          placeholder='Please enter user name'
+                          id='investAmount'
+                          placeholder='Please enter the investment amount'
                         />
                       </Box>
                     </Stack>
