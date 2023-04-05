@@ -38,12 +38,8 @@ const Home: NextPage = () => {
   const [infoFoName2, setInfoFoName2] = useState<string>("");
   const [liveSwitch, setLiveSwitch] = useState<boolean>(true);
 
-
-
-  const DrawerNewInvestment = () => {
-    const { isOpen, onOpen, onClose } = useDisclosure()
-    const firstField = useRef()
-  };
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const firstField = useRef()
 
   const user = useUser();
   if (!user) return null;
