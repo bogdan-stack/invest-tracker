@@ -173,8 +173,8 @@ const Home: NextPage = () => {
                   )}
                   {liveSwitch == true && (
                     <>
-                      <HStack justifyContent="space-between" textAlign="left" display={liveSwitch ? "none" : "block"} >
-                        <VStack alignItems="flex-start" spacing={0}>
+                      <HStack justifyContent="space-between" textAlign="left">
+                        <VStack alignItems="flex-start" spacing={0}  display={liveSwitch ? "none" : "flex"}>
                           <Text textColor="black" fontWeight="medium">
                             {" "}
                             {infoFoName}
