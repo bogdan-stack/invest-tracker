@@ -2,7 +2,7 @@
 /* elint-disable */
 
 import { type NextPage } from "next";
-import { useState, useDisclosure } from "react";
+import { useState } from "react";
 import Head from "next/head";
 import { SignIn, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import {
@@ -26,6 +26,7 @@ import {
   DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
+  useDisclosure
 } from "@chakra-ui/react";
 import { PlusSquareIcon } from "@chakra-ui/icons";
 import { api } from "~/utils/api";
@@ -36,6 +37,8 @@ const Home: NextPage = () => {
   const [infoUfVal2, setInfo2] = useState<string>("");
   const [infoFoName2, setInfoFoName2] = useState<string>("");
   const [liveSwitch, setLiveSwitch] = useState<boolean>(true);
+
+
 
   const DrawerNewInvestment = () => {
     const { isOpen, onOpen, onClose } = useDisclosure()
