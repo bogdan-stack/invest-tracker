@@ -28,6 +28,7 @@ const Home: NextPage = () => {
   const [infoFoName, setInfoFoName] = useState<string>("");
   const [infoUfVal2, setInfo2] = useState<string>("");
   const [infoFoName2, setInfoFoName2] = useState<string>("");
+  const [liveSwitch, setLiveSwitch] = useState<boolean>(true);
 
   const user = useUser();
   if (!user) return null;
@@ -36,13 +37,15 @@ const Home: NextPage = () => {
   const { data: sumSimfonia } = api.example.getSumSim.useQuery();
 
   const getInfo = async () => {
+    setLiveSwitch(false)
     const res = await fetch('https://invest-tracker-nine.vercel.app/api/trpc/getInfo')
     //const res = await fetch("http://localhost:3000/api/trpc/getInfo");
-    const { infoUfVal, infoFoName, infoUfVal2, infoFoName2 } = await res.json();
+    const { infoUfVal, infoFoName, infoUfVal2, infoFoName2, liveSwitch } = await res.json();
     setInfo(infoUfVal);
     setInfoFoName(infoFoName);
     setInfo2(infoUfVal2);
     setInfoFoName2(infoFoName2);
+    setLiveSwitch(true)
   };
 
   return (
@@ -161,7 +164,14 @@ const Home: NextPage = () => {
               </CardHeader>
               <CardBody>
                 <Stack divider={<StackDivider />} spacing="3">
-                  {infoFoName && (
+                  {liveSwitch == false && (
+                    <Stack padding={4}>
+                      <Skeleton height='20px' />
+                      <Skeleton height='20px' />
+                      <Skeleton height='20px' />
+                    </Stack>
+                  )}
+                  {liveSwitch == true && (
                     <>
                       <HStack justifyContent="space-between" textAlign="left">
                         <VStack alignItems="flex-start" spacing={0}>
