@@ -17,6 +17,7 @@ import {
   Button,
   VStack,
   Icon,
+  Box
 } from "@chakra-ui/react";
 import { PlusSquareIcon } from "@chakra-ui/icons";
 import { api } from "~/utils/api";
@@ -312,6 +313,9 @@ const Home: NextPage = () => {
               </CardBody>
             </Card>
           </Stack>
+          <Box>
+            <h1>TEST! TEST!</h1>
+          </Box>
           <HStack justifyContent="center" backgroundColor='white' p={1} dropShadow='2xl' marginTop='auto'>
               <VStack>
                 <Text textColor="gray.500" fontSize={14} lineHeight={1}>
