@@ -160,6 +160,16 @@ const Home: NextPage = () => {
                 <Heading fontSize="md">Live Info</Heading>
               </CardHeader>
               <CardBody>
+              {!infoFoName && (
+              <>
+              <Stack padding={4}>
+                <Skeleton height='20px' />
+                <Skeleton height='20px' />
+                <Skeleton height='20px' />
+                <Skeleton height='20px' />
+              </Stack>
+              </>
+                )}
                 <Stack divider={<StackDivider />} spacing="3">
                   {infoFoName && (
                     <>
