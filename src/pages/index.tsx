@@ -2,7 +2,7 @@
 /* elint-disable */
 
 import { type NextPage } from "next";
-import { useState } from "react";
+import { useState, useDisclosure } from "react";
 import Head from "next/head";
 import { SignIn, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import {
@@ -18,7 +18,14 @@ import {
   VStack,
   Icon,
   Box,
-  Skeleton
+  Skeleton,
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
 } from "@chakra-ui/react";
 import { PlusSquareIcon } from "@chakra-ui/icons";
 import { api } from "~/utils/api";
@@ -29,6 +36,11 @@ const Home: NextPage = () => {
   const [infoUfVal2, setInfo2] = useState<string>("");
   const [infoFoName2, setInfoFoName2] = useState<string>("");
   const [liveSwitch, setLiveSwitch] = useState<boolean>(true);
+
+  const DrawerNewInvestment = () => {
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const firstField = React.useRef()
+  };
 
   const user = useUser();
   if (!user) return null;
@@ -342,7 +354,42 @@ const Home: NextPage = () => {
               <Text textColor="gray.500" fontSize={14} lineHeight={1}>
                 Add Investment
               </Text>
-              <PlusSquareIcon color="red" w={6} h={6} margin={0} />
+              <Button leftIcon={<AddIcon />} colorScheme='red' onClick={onOpen}>
+                New Investment
+              </Button>
+              <Drawer
+                isOpen={isOpen}
+                placement='bottom'
+                initialFocusRef={firstField}
+                onClose={onClose}
+              >
+                <DrawerOverlay />
+                <DrawerContent>
+                  <DrawerCloseButton />
+                  <DrawerHeader borderBottomWidth='1px'>
+                    Create a new account
+                  </DrawerHeader>
+                  <DrawerBody>
+                    <Stack spacing='24px'>
+                      <Box>
+                        <FormLabel htmlFor='username'>Name</FormLabel>
+                        <Input
+                          ref={firstField}
+                          id='username'
+                          placeholder='Please enter user name'
+                        />
+                      </Box>
+                    </Stack>
+                  </DrawerBody>
+                  <DrawerFooter borderTopWidth='1px'>
+                    <Button variant='outline' mr={3} onClick={onClose}>
+                      Cancel
+                    </Button>
+                    <Button colorScheme='red'>Invest</Button>
+                  </DrawerFooter>
+                </DrawerContent>
+              </Drawer>
+
             </VStack>
           </HStack>
         </Stack>
