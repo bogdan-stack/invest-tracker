@@ -163,7 +163,7 @@ const Home: NextPage = () => {
                 <Heading fontSize="md">Live Info</Heading>
               </CardHeader>
               <CardBody>
-                <Stack divider={<StackDivider />} spacing="3">
+                <Stack divider={<StackDivider />} spacing="3" display={liveSwitch ? "none" : "block"}>
                   {liveSwitch == false && (
                     <Stack padding={4}>
                       <Skeleton height='20px' />
