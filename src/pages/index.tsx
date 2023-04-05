@@ -123,9 +123,9 @@ const Home: NextPage = () => {
               </CardHeader>
               {!data && (
                 <Stack padding={4}>
-                  <Skeleton isLoaded = 'true' height='20px' />
-                  <Skeleton isLoaded = 'true' height='20px' />
-                  <Skeleton isLoaded = 'true' height='20px' />
+                  <Skeleton isLoaded={true} height='20px' />
+                  <Skeleton isLoaded={true} height='20px' />
+                  <Skeleton isLoaded={true} height='20px' />
                 </Stack>
               )}
               {data && (<CardBody>
@@ -218,10 +218,10 @@ const Home: NextPage = () => {
                 <Heading fontSize="md">Your stats</Heading>
               </CardHeader>
               {!data && (<Stack padding={4}>
-                <Skeleton isLoaded = 'true' height='20px' />
-                <Skeleton isLoaded = 'true' height='20px' />
-                <Skeleton isLoaded = 'true' height='20px' />
-                <Skeleton isLoaded = 'true' height='20px' />
+                <Skeleton isLoaded={true} height='20px' />
+                <Skeleton isLoaded={true} height='20px' />
+                <Skeleton isLoaded={true} height='20px' />
+                <Skeleton isLoaded={true} height='20px' />
               </Stack>)}
               <CardBody>
                 <Stack divider={<StackDivider />} spacing="3">
