@@ -163,7 +163,7 @@ const Home: NextPage = () => {
                 <Heading fontSize="md">Live Info</Heading>
               </CardHeader>
               <CardBody>
-                <Stack divider={<StackDivider />} spacing="3" display={liveSwitch ? "none" : "block"}>
+                <Stack divider={<StackDivider />} spacing="3">
                   {liveSwitch == false && (
                     <Stack padding={4}>
                       <Skeleton height='20px' />
@@ -173,7 +173,7 @@ const Home: NextPage = () => {
                   )}
                   {liveSwitch == true && (
                     <>
-                      <HStack justifyContent="space-between" textAlign="left">
+                      <HStack justifyContent="space-between" textAlign="left" display={liveSwitch ? "none" : "block"} >
                         <VStack alignItems="flex-start" spacing={0}>
                           <Text textColor="black" fontWeight="medium">
                             {" "}
