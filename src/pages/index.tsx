@@ -2,7 +2,7 @@
 /* elint-disable */
 
 import { type NextPage } from "next";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Head from "next/head";
 import { SignIn, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import {
@@ -42,7 +42,7 @@ const Home: NextPage = () => {
 
   const DrawerNewInvestment = () => {
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const firstField = React.useRef()
+    const firstField = useRef()
   };
 
   const user = useUser();
