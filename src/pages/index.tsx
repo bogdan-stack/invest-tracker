@@ -122,7 +122,7 @@ const Home: NextPage = () => {
                 <Heading fontSize="md">Investments</Heading>
               </CardHeader>
               {!data && (
-                <Stack padding={2}>
+                <Stack padding={4}>
                   <Skeleton height='20px' />
                   <Skeleton height='20px' />
                   <Skeleton height='20px' />
@@ -148,7 +148,7 @@ const Home: NextPage = () => {
                     </HStack>
                   ))}
                 </Stack>
-              </CardBody> )}
+              </CardBody>)}
             </Card>
             <Card w="99%" alignSelf="center" backgroundColor="white">
               <CardHeader
@@ -217,6 +217,12 @@ const Home: NextPage = () => {
               >
                 <Heading fontSize="md">Your stats</Heading>
               </CardHeader>
+              {!data && (<Stack padding={4}>
+                <Skeleton height='20px' />
+                <Skeleton height='20px' />
+                <Skeleton height='20px' />
+                <Skeleton height='20px' />
+              </Stack>)}
               <CardBody>
                 <Stack divider={<StackDivider />} spacing="3">
                   <HStack justifyContent="space-between" textAlign="center">
@@ -322,13 +328,13 @@ const Home: NextPage = () => {
             </Card>
           </Stack>
           <HStack justifyContent="center" backgroundColor='white' p={1} dropShadow='2xl' marginTop='auto'>
-              <VStack>
-                <Text textColor="gray.500" fontSize={14} lineHeight={1}>
-                  Add Investment
-                </Text>
-                <PlusSquareIcon color="red" w={6} h={6} margin={0}/>
-              </VStack>
-            </HStack>
+            <VStack>
+              <Text textColor="gray.500" fontSize={14} lineHeight={1}>
+                Add Investment
+              </Text>
+              <PlusSquareIcon color="red" w={6} h={6} margin={0} />
+            </VStack>
+          </HStack>
         </Stack>
       </main>
     </>
