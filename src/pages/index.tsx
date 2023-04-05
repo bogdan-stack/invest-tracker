@@ -173,8 +173,8 @@ const Home: NextPage = () => {
                   )}
                   {liveSwitch == true && (
                     <>
-                      <HStack justifyContent="space-between" textAlign="left">
-                        <VStack alignItems="flex-start" spacing={0}  display={liveSwitch ? "none" : "flex"}>
+                      <HStack justifyContent="space-between" textAlign="left" display={liveSwitch ? "none" : "flex"}>
+                        <VStack alignItems="flex-start" spacing={0} >
                           <Text textColor="black" fontWeight="medium">
                             {" "}
                             {infoFoName}
@@ -188,7 +188,7 @@ const Home: NextPage = () => {
                           {parseFloat(infoUfVal)} RON
                         </Text>
                       </HStack>
-                      <HStack justifyContent="space-between" textAlign="left">
+                      <HStack justifyContent="space-between" textAlign="left" display={liveSwitch ? "none" : "flex"}>
                         <VStack alignItems="flex-start" spacing={0}>
                           <Text textColor="black" fontWeight="medium">
                             {" "}
