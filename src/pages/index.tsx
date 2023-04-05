@@ -27,7 +27,8 @@ import {
   DrawerContent,
   DrawerCloseButton,
   useDisclosure,
-  FormLabel
+  FormLabel,
+  Input
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { api } from "~/utils/api";
@@ -365,7 +366,7 @@ const Home: NextPage = () => {
                 <DrawerContent>
                   <DrawerCloseButton />
                   <DrawerHeader borderBottomWidth='1px'>
-                    Create a new account
+                    Make New Investment
                   </DrawerHeader>
                   <DrawerBody>
                     <Stack spacing='24px'>
