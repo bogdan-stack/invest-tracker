@@ -28,7 +28,7 @@ import {
   DrawerCloseButton,
   useDisclosure
 } from "@chakra-ui/react";
-import { PlusSquareIcon } from "@chakra-ui/icons";
+import { AddIcon } from "@chakra-ui/icons";
 import { api } from "~/utils/api";
 
 const Home: NextPage = () => {
