@@ -121,14 +121,14 @@ const Home: NextPage = () => {
               >
                 <Heading fontSize="md">Investments</Heading>
               </CardHeader>
-              {!post && (
+              {!data && (
                 <Stack>
                   <Skeleton height='20px' />
                   <Skeleton height='20px' />
                   <Skeleton height='20px' />
                 </Stack>
               )}
-              {post && (<CardBody>
+              {data && (<CardBody>
                 <Stack divider={<StackDivider />} spacing="3">
                   {data?.map((post) => (
                     <HStack
