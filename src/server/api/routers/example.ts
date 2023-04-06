@@ -25,4 +25,16 @@ export const exampleRouter = createTRPCRouter({
         }
     });
   }),
+  getSumAct: publicProcedure.query(({ ctx }) => {
+    return ctx.prisma.post.groupBy({
+      by: ['fondName'],
+        where: {
+          fondName: 'BRD Actiuni',
+        },
+        _sum: {
+          investAmount: true,
+          nrUf: true
+        }
+    });
+  }),
 });

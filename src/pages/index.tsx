@@ -49,11 +49,12 @@ const Home: NextPage = () => {
 
   const { data } = api.example.getAll.useQuery();
   const { data: sumSimfonia } = api.example.getSumSim.useQuery();
+  const { data: sumActiuni } = api.example.getSumAct.useQuery();
 
   const getInfo = async () => {
     setLiveSwitch(false);
-    const res = await fetch('https://invest-tracker-nine.vercel.app/api/trpc/getInfo')
-    //const res = await fetch("http://localhost:3000/api/trpc/getInfo");
+    //const res = await fetch('https://invest-tracker-nine.vercel.app/api/trpc/getInfo')
+    const res = await fetch("http://localhost:3000/api/trpc/getInfo");
     const { infoUfVal, infoFoName, infoUfVal2, infoFoName2, liveSwitch } =
       await res.json();
     setInfo(infoUfVal);
@@ -255,6 +256,108 @@ const Home: NextPage = () => {
                       textAlign="left"
                       spacing={0}
                     >
+                      {sumActiuni?.map((item) => (
+                        <>
+                          <Text
+                            key={item.fondName}
+                            textColor="black"
+                            fontSize="15"
+                            fontWeight="medium"
+                          >
+                            {item.fondName}:
+                          </Text>
+                          <Text textColor="gray.500" fontSize="2xl">
+                            {item._sum.investAmount} RON
+                          </Text>
+                        </>
+                      ))}
+                      {sumActiuni?.map((item) => (
+                        <>
+                          <Text
+                            key={item.fondName}
+                            textColor="black"
+                            fontSize="15"
+                            fontWeight="medium"
+                          >
+                            Nr. de U.F. deținute:
+                          </Text>
+                          <Text textColor="gray.500" fontSize="2xl">
+                            {item._sum.nrUf?.toFixed(4)} U.F.
+                          </Text>
+                        </>
+                      ))}
+                    </VStack>
+                    {infoUfVal2 && (
+                      <Card
+                        alignItems="center"
+                        padding="1rem"
+                        align="flex-start"
+                        backgroundColor="whatsapp.500"
+                        borderRadius="lg"
+                      >
+                        <VStack alignItems="center" align="center" spacing={0}>
+                          {sumActiuni?.map((item) => {
+                            const nrUf =
+                              Number(item._sum?.nrUf).toFixed(4) ?? 0;
+                            const ufVal = Number(infoUfVal).toFixed(4) ?? 0;
+                            const investAmount =
+                              Number(item._sum?.investAmount) ?? 0;
+                            const totalInvestment = (
+                              Number(parseFloat(nrUf)) *
+                              Number(parseFloat(ufVal))
+                            ).toFixed(2);
+                            const profit = (
+                              Number(parseFloat(totalInvestment).toFixed(2)) -
+                              investAmount
+                            ).toFixed(2);
+                            return (
+                              <>
+                                <Text
+                                  textColor="white"
+                                  fontSize="15"
+                                  fontWeight="medium"
+                                >
+                                  Valoarea totală a investiției:
+                                </Text>
+                                <Text
+                                  key={item._sum?.nrUf}
+                                  textColor="white"
+                                  fontSize="2xl"
+                                  fontWeight="medium"
+                                >
+                                  {totalInvestment} RON
+                                </Text>
+                                <Text
+                                  textColor="white"
+                                  fontSize="15"
+                                  fontWeight="medium"
+                                >
+                                  Profit:
+                                </Text>
+                                <Text
+                                  textColor="white"
+                                  fontSize="2xl"
+                                  fontWeight="medium"
+                                >
+                                  {profit} RON
+                                </Text>
+                              </>
+                            );
+                          })}
+                        </VStack>
+                      </Card>
+                    )}
+                  </HStack>
+                </Stack>
+              </CardBody>
+              <CardBody>
+                <Stack divider={<StackDivider />} spacing="3">
+                  <HStack justifyContent="space-between" textAlign="center">
+                    <VStack
+                      alignItems="flex-start"
+                      textAlign="left"
+                      spacing={0}
+                    >
                       {sumSimfonia?.map((item) => (
                         <>
                           <Text
@@ -304,11 +407,11 @@ const Home: NextPage = () => {
                             const totalInvestment = (
                               Number(parseFloat(nrUf)) *
                               Number(parseFloat(ufVal2))
-                            ).toFixed(4);
+                            ).toFixed(2);
                             const profit = (
-                              Number(parseFloat(totalInvestment).toFixed(4)) -
+                              Number(parseFloat(totalInvestment).toFixed(2)) -
                               investAmount
-                            ).toFixed(4);
+                            ).toFixed(2);
                             return (
                               <>
                                 <Text
