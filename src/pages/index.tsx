@@ -34,6 +34,8 @@ import {
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { api } from "~/utils/api";
+import { StatsPage } from "./stats";
+
 
 const Home: NextPage = () => {
   const [infoUfVal, setInfo] = useState<string>("");
@@ -48,8 +50,13 @@ const Home: NextPage = () => {
   if (!user) return null;
 
   const { data } = api.example.getAll.useQuery();
+
   const { data: sumSimfonia } = api.example.getSumSim.useQuery();
+  const totalSim = sumSimfonia?.[0]?._sum.investAmount?.toString()
+  const totalUfSim = sumSimfonia?.[0]?._sum.nrUf?.toString()
   const { data: sumActiuni } = api.example.getSumAct.useQuery();
+  const totalAct = sumActiuni?.[0]?._sum.investAmount?.toString()
+  const totalUfAct = sumActiuni?.[0]?._sum.nrUf?.toString()
 
   const getInfo = async () => {
     setLiveSwitch(false);
@@ -123,47 +130,7 @@ const Home: NextPage = () => {
         <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
         <Stack backgroundColor="gray.100" display="flex" flexDirection="column">
           <Stack justifyContent="center" p={3}>
-            <Card w="99%" alignSelf="center" backgroundColor="white">
-              <CardHeader
-                paddingTop="20px"
-                paddingBottom={0}
-                paddingLeft="20px"
-                paddingRight="20px"
-              >
-                <Heading fontSize="md">Investments</Heading>
-              </CardHeader>
-              {!data && (
-                <Stack padding={4}>
-                  <Skeleton height="15px" />
-                  <Skeleton height="15px" />
-                  <Skeleton height="15px" />
-                  <Skeleton height="15px" />
-                </Stack>
-              )}
-              {data && (
-                <CardBody>
-                  <Stack divider={<StackDivider />} spacing="3">
-                    {data?.map((post) => (
-                      <HStack
-                        justifyContent="space-between"
-                        textAlign="center"
-                        key={post.id}
-                      >
-                        <Text textColor="black" fontWeight="medium">
-                          {" "}
-                          {post.investAmount} RON
-                        </Text>
-                        <Text textColor="gray.500"> {post.fondName} </Text>
-                        <Text textColor="gray.500">
-                          {" "}
-                          {post.createdAt.toDateString()}{" "}
-                        </Text>
-                      </HStack>
-                    ))}
-                  </Stack>
-                </CardBody>
-              )}
-            </Card>
+            <StatsPage totalSim={totalSim} totalUfSim={totalUfSim} totalAct={totalAct} totalUfAct={totalUfAct} infoUfVal2={infoUfVal2} infoUfVal={infoUfVal} />
             <Card w="99%" alignSelf="center" backgroundColor="white">
               <CardHeader
                 paddingTop="20px"
@@ -230,6 +197,47 @@ const Home: NextPage = () => {
                   </Button>
                 </Stack>
               </CardBody>
+            </Card>
+            <Card w="99%" alignSelf="center" backgroundColor="white">
+              <CardHeader
+                paddingTop="20px"
+                paddingBottom={0}
+                paddingLeft="20px"
+                paddingRight="20px"
+              >
+                <Heading fontSize="md">Investments</Heading>
+              </CardHeader>
+              {!data && (
+                <Stack padding={4}>
+                  <Skeleton height="15px" />
+                  <Skeleton height="15px" />
+                  <Skeleton height="15px" />
+                  <Skeleton height="15px" />
+                </Stack>
+              )}
+              {data && (
+                <CardBody>
+                  <Stack divider={<StackDivider />} spacing="3">
+                    {data?.map((post) => (
+                      <HStack
+                        justifyContent="space-between"
+                        textAlign="center"
+                        key={post.id}
+                      >
+                        <Text textColor="black" fontWeight="medium">
+                          {" "}
+                          {post.investAmount} RON
+                        </Text>
+                        <Text textColor="gray.500"> {post.fondName} </Text>
+                        <Text textColor="gray.500">
+                          {" "}
+                          {post.createdAt.toDateString()}{" "}
+                        </Text>
+                      </HStack>
+                    ))}
+                  </Stack>
+                </CardBody>
+              )}
             </Card>
             <Card w="99%" alignSelf="center" backgroundColor="white">
               <CardHeader
@@ -404,12 +412,12 @@ const Home: NextPage = () => {
                             const ufVal2 = Number(infoUfVal2).toFixed(4) ?? 0;
                             const investAmount =
                               Number(item._sum?.investAmount) ?? 0;
-                            const totalInvestment = (
+                            const totalInvestment2 = (
                               Number(parseFloat(nrUf)) *
                               Number(parseFloat(ufVal2))
                             ).toFixed(2);
-                            const profit = (
-                              Number(parseFloat(totalInvestment).toFixed(2)) -
+                            const profit2 = (
+                              Number(parseFloat(totalInvestment2).toFixed(2)) -
                               investAmount
                             ).toFixed(2);
                             return (
@@ -427,7 +435,7 @@ const Home: NextPage = () => {
                                   fontSize="2xl"
                                   fontWeight="medium"
                                 >
-                                  {totalInvestment} RON
+                                  {totalInvestment2} RON
                                 </Text>
                                 <Text
                                   textColor="white"
@@ -441,7 +449,7 @@ const Home: NextPage = () => {
                                   fontSize="2xl"
                                   fontWeight="medium"
                                 >
-                                  {profit} RON
+                                  {profit2} RON
                                 </Text>
                               </>
                             );
@@ -479,7 +487,8 @@ const Home: NextPage = () => {
                         <Input
                           id="investDate"
                           type="date"
-                          focusBorderColor="black" />
+                          focusBorderColor="black"
+                        />
                       </Box>
                       <Box>
                         <FormLabel htmlFor="investAmount">Amount</FormLabel>
@@ -493,9 +502,10 @@ const Home: NextPage = () => {
                       <Box>
                         <FormLabel htmlFor="investFond">Found</FormLabel>
                         <Select
-                        id="investFond"
-                        placeholder="Select a found"
-                        focusBorderColor="black">
+                          id="investFond"
+                          placeholder="Select a found"
+                          focusBorderColor="black"
+                        >
                           <option value="BRD Simfonia">BRD Simfonia</option>
                           <option value="BRD Actiuni">BRD Actiuni</option>
                         </Select>
