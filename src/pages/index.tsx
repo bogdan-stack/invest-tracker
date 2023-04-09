@@ -35,6 +35,8 @@ import {
 import { AddIcon } from "@chakra-ui/icons";
 import { api } from "~/utils/api";
 import StatsPage from './stats';
+import { ArrowLeftOnRectangleIcon, ArrowRightOnRectangleIcon } from "@heroicons/react/24/solid";
+
 
 
 const Home: NextPage = () => {
@@ -60,8 +62,8 @@ const Home: NextPage = () => {
 
   const getInfo = async () => {
     setLiveSwitch(false);
-    const res = await fetch('https://invest-tracker-nine.vercel.app/api/trpc/getInfo')
-    //const res = await fetch("http://localhost:3000/api/trpc/getInfo");
+    //const res = await fetch('https://invest-tracker-nine.vercel.app/api/trpc/getInfo')
+    const res = await fetch("http://localhost:3000/api/trpc/getInfo");
     const { infoUfVal, infoFoName, infoUfVal2, infoFoName2, liveSwitch } =
       await res.json();
     setInfo(infoUfVal);
@@ -81,28 +83,31 @@ const Home: NextPage = () => {
       <main>
         <Stack>
           <HStack
+            backgroundColor="white"
             display="flex"
             position="sticky"
             justifyContent="space-between"
             padding="3"
             paddingBottom={1}
             paddingTop={1}
+            shadow='md'
           >
             {!user.isSignedIn && (
               <SignInButton>
                 <Button
-                  colorScheme="red"
+                  backgroundColor='#e9041e'
+                  textColor="white"
                   fontSize="sm"
                   padding="1.5"
                   height="-webkit-fit-content"
                   alignSelf="center"
                 >
-                  Log In
+                  <ArrowLeftOnRectangleIcon className="h-6 w-6" aria-hidden="true" />
                 </Button>
               </SignInButton>
             )}
             {!!user.isSignedIn && (
-              <Avatar size="sm" bg="red.500">
+              <Avatar size="sm" bg="#e9041e">
                 <AvatarBadge boxSize="1.25em" bg="green.500" />
               </Avatar>
             )}
@@ -115,20 +120,21 @@ const Home: NextPage = () => {
             {!!user.isSignedIn && (
               <SignOutButton>
                 <Button
-                  colorScheme="red"
+                  backgroundColor='#e9041e'
+                  textColor="white"
                   fontSize="sm"
                   padding="1.5"
                   height="-webkit-fit-content"
                   alignSelf="center"
                 >
-                  Log Out
+                  <ArrowRightOnRectangleIcon className="h-6 w-6" aria-hidden="true" />
                 </Button>
               </SignOutButton>
             )}
           </HStack>
         </Stack>
         <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
-        <Stack backgroundColor="gray.100" display="flex" flexDirection="column">
+        <Stack backgroundColor="#fafafa" display="flex" flexDirection="column">
           <Stack justifyContent="center" p={3}>
             <StatsPage totalSim={totalSim} totalUfSim={totalUfSim} totalAct={totalAct} totalUfAct={totalUfAct} infoUfVal2={infoUfVal2} infoUfVal={infoUfVal} />
             <Card w="99%" alignSelf="center" backgroundColor="white">
@@ -192,7 +198,7 @@ const Home: NextPage = () => {
                       </HStack>
                     </>
                   )}
-                  <Button colorScheme="red" onClick={getInfo}>
+                  <Button backgroundColor='#e9041e' textColor="white" onClick={getInfo}>
                     Live Feed
                   </Button>
                 </Stack>
@@ -466,11 +472,11 @@ const Home: NextPage = () => {
             justifyContent="center"
             backgroundColor="white"
             p={1}
-            dropShadow="2xl"
             marginTop="auto"
+            shadow="md"
           >
             <VStack>
-              <Button leftIcon={<AddIcon />} colorScheme="red" onClick={onOpen}>
+              <Button leftIcon={<AddIcon />} backgroundColor='#e9041e' textColor="white" onClick={onOpen}>
                 New Investment
               </Button>
               <Drawer isOpen={isOpen} placement="bottom" onClose={onClose}>
@@ -516,7 +522,7 @@ const Home: NextPage = () => {
                     <Button variant="outline" mr={3} onClick={onClose}>
                       Cancel
                     </Button>
-                    <Button colorScheme="red">Invest</Button>
+                    <Button backgroundColor='#e9041e' textColor="white">Invest</Button>
                   </DrawerFooter>
                 </DrawerContent>
               </Drawer>

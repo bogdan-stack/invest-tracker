@@ -11,6 +11,8 @@ import {
   HStack,
   Stack,
 } from "@chakra-ui/react";
+import Image from 'next/image';
+import BRDlogoAM from "../../public/ico_logo-mob.svg";
 
 type StatsPageProps = {
   totalSim: string | undefined;
@@ -35,8 +37,8 @@ const profitTotal = profitAct + profitSim;
   return (
     <div>
       <Stack spacing={3}>
-        <VStack spacing={3}>
-          <Heading fontSize="2xl">BRD Investment Tracker</Heading>
+        <VStack spacing={3} alignItems='flex-start' justifyContent='left'>
+          <Image src={BRDlogoAM} alt="BRD logo" width={200} height={200} />
         </VStack>
         <HStack justifyContent="center">
           <StatGroup>
