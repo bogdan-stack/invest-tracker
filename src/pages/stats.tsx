@@ -42,11 +42,14 @@ const profitTotal = profitAct + profitSim;
           <StatGroup>
             <Stat textAlign="center">
               <StatLabel>Profit Portofoliu</StatLabel>
+              {infoUfVal && (
+              <>
               <StatNumber>{profitTotal.toFixed(2).toString()} RON</StatNumber>
               <StatHelpText>
                 <StatArrow type="increase" />
                 {procentProfit.toFixed(2).toString()}%
               </StatHelpText>
+              </>)}
             </Stat>
           </StatGroup>
         </HStack>
