@@ -1,3 +1,6 @@
+/* eslint-disable */
+/* elint-disable */
+
 import React from "react";
 import {
   VStack,
