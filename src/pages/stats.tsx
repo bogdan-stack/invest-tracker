@@ -21,7 +21,7 @@ type StatsPageProps = {
   infoUfVal2: string;
 };
 
-export const StatsPage = ({totalSim, totalUfSim, totalAct, totalUfAct, infoUfVal, infoUfVal2}: StatsPageProps) => {
+const StatsPage = ({totalSim, totalUfSim, totalAct, totalUfAct, infoUfVal, infoUfVal2}: StatsPageProps) => {
 const totalInvestAct =  totalUfAct ? Number(parseFloat(totalUfAct)) * Number(parseFloat(infoUfVal)) : 0;
 const profitAct = totalUfAct && totalAct ? totalInvestAct - Number(totalAct) : 0;
 
@@ -54,3 +54,5 @@ const profitTotal = profitAct + profitSim;
     </div>
   );
 };
+
+export default StatsPage;

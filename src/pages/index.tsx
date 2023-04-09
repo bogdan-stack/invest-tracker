@@ -34,7 +34,7 @@ import {
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { api } from "~/utils/api";
-import { StatsPage } from "./stats";
+import StatsPage from './stats';
 
 
 const Home: NextPage = () => {
