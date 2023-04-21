@@ -34,16 +34,18 @@ import {
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { api } from "~/utils/api";
-import StatsPage from './stats';
-import { ArrowLeftOnRectangleIcon, ArrowRightOnRectangleIcon } from "@heroicons/react/24/solid";
-
-
+import StatsPage from "./stats";
+import {
+  ArrowLeftOnRectangleIcon,
+  ArrowRightOnRectangleIcon,
+} from "@heroicons/react/24/solid";
 
 const Home: NextPage = () => {
   const [infoUfVal, setInfo] = useState<string>("");
   const [infoFoName, setInfoFoName] = useState<string>("");
   const [infoUfVal2, setInfo2] = useState<string>("");
   const [infoFoName2, setInfoFoName2] = useState<string>("");
+  const [infoDataCotatie, setInfoDataCotatie] = useState<string>("");
   const [liveSwitch, setLiveSwitch] = useState<boolean>(true);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -54,22 +56,29 @@ const Home: NextPage = () => {
   const { data } = api.example.getAll.useQuery();
 
   const { data: sumSimfonia } = api.example.getSumSim.useQuery();
-  const totalSim = sumSimfonia?.[0]?._sum.investAmount?.toString()
-  const totalUfSim = sumSimfonia?.[0]?._sum.nrUf?.toString()
+  const totalSim = sumSimfonia?.[0]?._sum.investAmount?.toString();
+  const totalUfSim = sumSimfonia?.[0]?._sum.nrUf?.toString();
   const { data: sumActiuni } = api.example.getSumAct.useQuery();
-  const totalAct = sumActiuni?.[0]?._sum.investAmount?.toString()
-  const totalUfAct = sumActiuni?.[0]?._sum.nrUf?.toString()
+  const totalAct = sumActiuni?.[0]?._sum.investAmount?.toString();
+  const totalUfAct = sumActiuni?.[0]?._sum.nrUf?.toString();
 
   const getInfo = async () => {
     setLiveSwitch(false);
-    const res = await fetch('https://invest-tracker-nine.vercel.app/api/trpc/getInfo')
-    //const res = await fetch("http://localhost:3000/api/trpc/getInfo");
-    const { infoUfVal, infoFoName, infoUfVal2, infoFoName2, liveSwitch } =
-      await res.json();
+    //const res = await fetch('https://invest-tracker-nine.vercel.app/api/trpc/getInfo')
+    const res = await fetch("http://localhost:3000/api/trpc/getInfo");
+    const {
+      infoUfVal,
+      infoFoName,
+      infoUfVal2,
+      infoFoName2,
+      liveSwitch,
+      infoDataCotatie,
+    } = await res.json();
     setInfo(infoUfVal);
     setInfoFoName(infoFoName);
     setInfo2(infoUfVal2);
     setInfoFoName2(infoFoName2);
+    setInfoDataCotatie(infoDataCotatie);
     setLiveSwitch(true);
   };
 
@@ -90,19 +99,22 @@ const Home: NextPage = () => {
             padding="3"
             paddingBottom={1}
             paddingTop={1}
-            shadow='md'
+            shadow="md"
           >
             {!user.isSignedIn && (
               <SignInButton>
                 <Button
-                  backgroundColor='#e9041e'
+                  backgroundColor="#e9041e"
                   textColor="white"
                   fontSize="sm"
                   padding="1.5"
                   height="-webkit-fit-content"
                   alignSelf="center"
                 >
-                  <ArrowLeftOnRectangleIcon className="h-6 w-6" aria-hidden="true" />
+                  <ArrowLeftOnRectangleIcon
+                    className="h-6 w-6"
+                    aria-hidden="true"
+                  />
                 </Button>
               </SignInButton>
             )}
@@ -120,14 +132,17 @@ const Home: NextPage = () => {
             {!!user.isSignedIn && (
               <SignOutButton>
                 <Button
-                  backgroundColor='#e9041e'
+                  backgroundColor="#e9041e"
                   textColor="white"
                   fontSize="sm"
                   padding="1.5"
                   height="-webkit-fit-content"
                   alignSelf="center"
                 >
-                  <ArrowRightOnRectangleIcon className="h-6 w-6" aria-hidden="true" />
+                  <ArrowRightOnRectangleIcon
+                    className="h-6 w-6"
+                    aria-hidden="true"
+                  />
                 </Button>
               </SignOutButton>
             )}
@@ -136,7 +151,14 @@ const Home: NextPage = () => {
         <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
         <Stack backgroundColor="#fafafa" display="flex" flexDirection="column">
           <Stack justifyContent="center" p={3}>
-            <StatsPage totalSim={totalSim} totalUfSim={totalUfSim} totalAct={totalAct} totalUfAct={totalUfAct} infoUfVal2={infoUfVal2} infoUfVal={infoUfVal} />
+            <StatsPage
+              totalSim={totalSim}
+              totalUfSim={totalUfSim}
+              totalAct={totalAct}
+              totalUfAct={totalUfAct}
+              infoUfVal2={infoUfVal2}
+              infoUfVal={infoUfVal}
+            />
             <Card w="99%" alignSelf="center" backgroundColor="white">
               <CardHeader
                 paddingTop="20px"
@@ -158,6 +180,7 @@ const Home: NextPage = () => {
                   )}
                   {liveSwitch == true && (
                     <>
+                      <Text textAlign='right' >{infoDataCotatie}</Text>
                       <HStack
                         justifyContent="space-between"
                         textAlign="left"
@@ -198,7 +221,11 @@ const Home: NextPage = () => {
                       </HStack>
                     </>
                   )}
-                  <Button backgroundColor='#e9041e' textColor="white" onClick={getInfo}>
+                  <Button
+                    backgroundColor="#e9041e"
+                    textColor="white"
+                    onClick={getInfo}
+                  >
                     Live Feed
                   </Button>
                 </Stack>
@@ -476,7 +503,12 @@ const Home: NextPage = () => {
             shadow="md"
           >
             <VStack>
-              <Button leftIcon={<AddIcon />} backgroundColor='#e9041e' textColor="white" onClick={onOpen}>
+              <Button
+                leftIcon={<AddIcon />}
+                backgroundColor="#e9041e"
+                textColor="white"
+                onClick={onOpen}
+              >
                 New Investment
               </Button>
               <Drawer isOpen={isOpen} placement="bottom" onClose={onClose}>
@@ -522,7 +554,9 @@ const Home: NextPage = () => {
                     <Button variant="outline" mr={3} onClick={onClose}>
                       Cancel
                     </Button>
-                    <Button backgroundColor='#e9041e' textColor="white">Invest</Button>
+                    <Button backgroundColor="#e9041e" textColor="white">
+                      Invest
+                    </Button>
                   </DrawerFooter>
                 </DrawerContent>
               </Drawer>

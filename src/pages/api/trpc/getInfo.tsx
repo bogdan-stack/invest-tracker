@@ -11,6 +11,9 @@ const getInfo = async (req: NextApiRequest, res: NextApiResponse) => {
   const dom = new JSDOM(html);
   const document = dom.window.document;
 
+  const dataCotatie = document.querySelector('div[titlu_view="BRD Simfonia"]')
+  let infoDataCotatie = dataCotatie.getAttribute('data_view')
+
   const divSim = document.querySelector('div[titlu_view="BRD Simfonia"]')
   let infoUfVal2 = divSim.getAttribute('cotatie_view')
   infoUfVal2 = parseFloat(infoUfVal2.replace(',','.').trim())
@@ -24,7 +27,7 @@ const getInfo = async (req: NextApiRequest, res: NextApiResponse) => {
 
   console.log("Live info", infoUfVal);
 
-  res.status(200).json({ infoUfVal, infoFoName, infoFoName2, infoUfVal2 });
+  res.status(200).json({ infoUfVal, infoFoName, infoFoName2, infoUfVal2, infoDataCotatie});
 };
 
 export default getInfo;
