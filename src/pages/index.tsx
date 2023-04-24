@@ -49,6 +49,11 @@ const Home: NextPage = () => {
   const [liveSwitch, setLiveSwitch] = useState<boolean>(true);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [inputAmount, setInputAmount] = useState<number>(0);
+  const [inputUf, setInputUf] = useState<string>("");
+  const [inputFond, setInputFond] = useState<string>("");
+  const { mutate } = api.example.create.useMutation();
+
 
   const user = useUser();
   if (!user) return null;
@@ -526,6 +531,7 @@ const Home: NextPage = () => {
                           id="investDate"
                           type="date"
                           focusBorderColor="black"
+                          defaultValue = {new Date().toISOString().slice(0, 10)}
                         />
                       </Box>
                       <Box>
@@ -535,6 +541,8 @@ const Home: NextPage = () => {
                           id="investAmount"
                           type="number"
                           placeholder="Please enter the investment amount"
+                          value={inputAmount}
+                          onChange={(e) => setInputAmount(Number(e.target.value))}
                         />
                       </Box>
                       <Box>
@@ -543,9 +551,11 @@ const Home: NextPage = () => {
                           id="investFond"
                           placeholder="Select a found"
                           focusBorderColor="black"
+                          value={inputFond}
+                          onChange={(e) => setInputFond(e.target.value)}
                         >
-                          <option value="BRD Simfonia">BRD Simfonia</option>
-                          <option value="BRD Actiuni">BRD Actiuni</option>
+                          <option id="Sim" value="BRD Simfonia">BRD Simfonia</option>
+                          <option id="Act" value="BRD Actiuni">BRD Actiuni</option>
                         </Select>
                       </Box>
                     </Stack>
@@ -554,7 +564,15 @@ const Home: NextPage = () => {
                     <Button variant="outline" mr={3} onClick={onClose}>
                       Cancel
                     </Button>
-                    <Button backgroundColor="#e9041e" textColor="white">
+                    <Button
+                    backgroundColor="#e9041e"
+                    textColor="white"
+                    onClick={() => mutate({
+                      investAmount: inputAmount?? 0,
+                      fondName: inputFond,
+                      nrUf: inputAmount / parseFloat(infoUfVal2),
+                      ufValue: parseFloat(infoUfVal2),
+                    })}>
                       Invest
                     </Button>
                   </DrawerFooter>
