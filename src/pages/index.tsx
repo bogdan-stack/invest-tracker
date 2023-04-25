@@ -30,6 +30,8 @@ import {
   Input,
   Select,
   Avatar,
+  NumberInput,
+  NumberInputField,
   AvatarBadge,
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
@@ -50,9 +52,16 @@ const Home: NextPage = () => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [inputAmount, setInputAmount] = useState<number>(0);
-  const [inputUf, setInputUf] = useState<string>("");
   const [inputFond, setInputFond] = useState<string>("");
-  const { mutate } = api.example.create.useMutation();
+
+  const ctx = api.useContext();
+  const { mutate, isLoading: isPosting } = api.example.create.useMutation({
+    onSuccess: () => {
+      void ctx.example.getAll.invalidate();
+      void ctx.example.getSumAct.invalidate();
+      void ctx.example.getSumSim.invalidate();
+    },
+  });
 
 
   const user = useUser();
@@ -66,6 +75,22 @@ const Home: NextPage = () => {
   const { data: sumActiuni } = api.example.getSumAct.useQuery();
   const totalAct = sumActiuni?.[0]?._sum.investAmount?.toString();
   const totalUfAct = sumActiuni?.[0]?._sum.nrUf?.toString();
+
+  const calculateUf = () => {
+    if (inputFond === "BRD Simfonia") {
+      return (inputAmount / parseFloat(infoUfVal2));
+    } else {
+      return (inputAmount / parseFloat(infoUfVal));
+    }
+  }
+
+  const ufValue = () => {
+    if (inputFond === "BRD Simfonia") {
+      return parseFloat(infoUfVal2);
+    } else {
+      return parseFloat(infoUfVal);
+    }
+  }
 
   const getInfo = async () => {
     setLiveSwitch(false);
@@ -536,14 +561,15 @@ const Home: NextPage = () => {
                       </Box>
                       <Box>
                         <FormLabel htmlFor="investAmount">Amount</FormLabel>
-                        <Input
-                          focusBorderColor="black"
+                        <NumberInput focusBorderColor="black">
+                        <NumberInputField
                           id="investAmount"
                           type="number"
                           placeholder="Please enter the investment amount"
                           value={inputAmount}
                           onChange={(e) => setInputAmount(Number(e.target.value))}
                         />
+                        </NumberInput>
                       </Box>
                       <Box>
                         <FormLabel htmlFor="investFond">Found</FormLabel>
@@ -567,12 +593,15 @@ const Home: NextPage = () => {
                     <Button
                     backgroundColor="#e9041e"
                     textColor="white"
-                    onClick={() => mutate({
-                      investAmount: inputAmount?? 0,
-                      fondName: inputFond,
-                      nrUf: inputAmount / parseFloat(infoUfVal2),
-                      ufValue: parseFloat(infoUfVal2),
-                    })}>
+                    onClick={() => {
+                      mutate({
+                        investAmount: inputAmount ?? 0,
+                        fondName: inputFond,
+                        nrUf: calculateUf(),
+                        ufValue: ufValue(),
+                      });
+                      onClose();
+                    }}>
                       Invest
                     </Button>
                   </DrawerFooter>
