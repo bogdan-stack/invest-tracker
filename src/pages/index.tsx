@@ -64,8 +64,7 @@ const Home: NextPage = () => {
   });
 
 
-  const user = useUser();
-  if (!user) return null;
+  const {isLoaded: userLoaded, isSignedIn} = useUser();
 
   const { data } = api.example.getAll.useQuery();
 
@@ -112,6 +111,8 @@ const Home: NextPage = () => {
     setLiveSwitch(true);
   };
 
+  if (!userLoaded) return <div />;
+
   return (
     <>
       <Head>
@@ -131,7 +132,11 @@ const Home: NextPage = () => {
             paddingTop={1}
             shadow="md"
           >
-            {!user.isSignedIn && (
+            {!isSignedIn && (
+              <>
+              <Text>
+                Please sign in!
+              </Text>
               <SignInButton>
                 <Button
                   backgroundColor="#e9041e"
@@ -147,19 +152,20 @@ const Home: NextPage = () => {
                   />
                 </Button>
               </SignInButton>
+              </>
             )}
-            {!!user.isSignedIn && (
+            {!!isSignedIn && (
               <Avatar size="sm" bg="#e9041e">
                 <AvatarBadge boxSize="1.25em" bg="green.500" />
               </Avatar>
             )}
 
-            {!!user.isSignedIn && (
+            {!!isSignedIn && (
               <Text padding={2} textColor="black" fontWeight="bold">
                 Hello Bogdan!
               </Text>
             )}
-            {!!user.isSignedIn && (
+            {!!isSignedIn && (
               <SignOutButton>
                 <Button
                   backgroundColor="#e9041e"
@@ -181,14 +187,14 @@ const Home: NextPage = () => {
         <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
         <Stack backgroundColor="#fafafa" display="flex" flexDirection="column">
           <Stack justifyContent="center" p={3}>
-            <StatsPage
+          {!!isSignedIn && (<StatsPage
               totalSim={totalSim}
               totalUfSim={totalUfSim}
               totalAct={totalAct}
               totalUfAct={totalUfAct}
               infoUfVal2={infoUfVal2}
               infoUfVal={infoUfVal}
-            />
+            />)}
             <Card w="99%" alignSelf="center" backgroundColor="white">
               <CardHeader
                 paddingTop="20px"
@@ -261,6 +267,7 @@ const Home: NextPage = () => {
                 </Stack>
               </CardBody>
             </Card>
+            {!!isSignedIn && (
             <Card w="99%" alignSelf="center" backgroundColor="white">
               <CardHeader
                 paddingTop="20px"
@@ -301,7 +308,8 @@ const Home: NextPage = () => {
                   </Stack>
                 </CardBody>
               )}
-            </Card>
+            </Card>)}
+            {!!isSignedIn && (
             <Card w="99%" alignSelf="center" backgroundColor="white">
               <CardHeader
                 paddingTop="20px"
@@ -523,7 +531,7 @@ const Home: NextPage = () => {
                   </HStack>
                 </Stack>
               </CardBody>
-            </Card>
+            </Card>)}
           </Stack>
           <HStack
             justifyContent="center"
@@ -533,14 +541,14 @@ const Home: NextPage = () => {
             shadow="md"
           >
             <VStack>
-              <Button
+            {!!isSignedIn && (<Button
                 leftIcon={<AddIcon />}
                 backgroundColor="#e9041e"
                 textColor="white"
                 onClick={onOpen}
               >
                 New Investment
-              </Button>
+              </Button>)}
               <Drawer isOpen={isOpen} placement="bottom" onClose={onClose}>
                 <DrawerOverlay />
                 <DrawerContent>
