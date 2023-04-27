@@ -61,4 +61,11 @@ export const exampleRouter = createTRPCRouter({
       },
   });
 }),
+delete: privateProcedure.input(z.string()).mutation(async ({ ctx, input }) => {
+  await ctx.prisma.post.delete({
+    where: {
+      id: input,
+    },
+  });
+}),
 });

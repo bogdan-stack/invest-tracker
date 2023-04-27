@@ -34,12 +34,13 @@ import {
   NumberInputField,
   AvatarBadge,
 } from "@chakra-ui/react";
-import { AddIcon } from "@chakra-ui/icons";
+import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
 import { api } from "~/utils/api";
 import StatsPage from "./stats";
 import {
   ArrowLeftOnRectangleIcon,
   ArrowRightOnRectangleIcon,
+  XCircleIcon,
 } from "@heroicons/react/24/solid";
 
 const Home: NextPage = () => {
@@ -53,6 +54,7 @@ const Home: NextPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [inputAmount, setInputAmount] = useState<number>(0);
   const [inputFond, setInputFond] = useState<string>("");
+  const [ inputIdToDelete, setInputIdToDelete ] = useState<string>("");
 
   const ctx = api.useContext();
   const { mutate, isLoading: isPosting } = api.example.create.useMutation({
@@ -62,9 +64,15 @@ const Home: NextPage = () => {
       void ctx.example.getSumSim.invalidate();
     },
   });
+  const { mutate: mutateDelete } = api.example.delete.useMutation({
+    onSuccess: () => {
+      void ctx.example.getAll.invalidate();
+      void ctx.example.getSumAct.invalidate();
+      void ctx.example.getSumSim.invalidate();
+    },
+  });
 
-
-  const {isLoaded: userLoaded, isSignedIn} = useUser();
+  const { isLoaded: userLoaded, isSignedIn } = useUser();
 
   const { data } = api.example.getAll.useQuery();
 
@@ -77,11 +85,11 @@ const Home: NextPage = () => {
 
   const calculateUf = () => {
     if (inputFond === "BRD Simfonia") {
-      return (inputAmount / parseFloat(infoUfVal2));
+      return inputAmount / parseFloat(infoUfVal2);
     } else {
-      return (inputAmount / parseFloat(infoUfVal));
+      return inputAmount / parseFloat(infoUfVal);
     }
-  }
+  };
 
   const ufValue = () => {
     if (inputFond === "BRD Simfonia") {
@@ -89,7 +97,9 @@ const Home: NextPage = () => {
     } else {
       return parseFloat(infoUfVal);
     }
-  }
+  };
+
+
 
   const getInfo = async () => {
     setLiveSwitch(false);
@@ -134,24 +144,22 @@ const Home: NextPage = () => {
           >
             {!isSignedIn && (
               <>
-              <Text>
-                Please sign in!
-              </Text>
-              <SignInButton>
-                <Button
-                  backgroundColor="#e9041e"
-                  textColor="white"
-                  fontSize="sm"
-                  padding="1.5"
-                  height="-webkit-fit-content"
-                  alignSelf="center"
-                >
-                  <ArrowLeftOnRectangleIcon
-                    className="h-6 w-6"
-                    aria-hidden="true"
-                  />
-                </Button>
-              </SignInButton>
+                <Text>Please sign in!</Text>
+                <SignInButton>
+                  <Button
+                    backgroundColor="#e9041e"
+                    textColor="white"
+                    fontSize="sm"
+                    padding="1.5"
+                    height="-webkit-fit-content"
+                    alignSelf="center"
+                  >
+                    <ArrowLeftOnRectangleIcon
+                      className="h-6 w-6"
+                      aria-hidden="true"
+                    />
+                  </Button>
+                </SignInButton>
               </>
             )}
             {!!isSignedIn && (
@@ -187,14 +195,16 @@ const Home: NextPage = () => {
         <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
         <Stack backgroundColor="#fafafa" display="flex" flexDirection="column">
           <Stack justifyContent="center" p={3}>
-          {!!isSignedIn && (<StatsPage
-              totalSim={totalSim}
-              totalUfSim={totalUfSim}
-              totalAct={totalAct}
-              totalUfAct={totalUfAct}
-              infoUfVal2={infoUfVal2}
-              infoUfVal={infoUfVal}
-            />)}
+            {!!isSignedIn && (
+              <StatsPage
+                totalSim={totalSim}
+                totalUfSim={totalUfSim}
+                totalAct={totalAct}
+                totalUfAct={totalUfAct}
+                infoUfVal2={infoUfVal2}
+                infoUfVal={infoUfVal}
+              />
+            )}
             <Card w="99%" alignSelf="center" backgroundColor="white">
               <CardHeader
                 paddingTop="20px"
@@ -216,7 +226,7 @@ const Home: NextPage = () => {
                   )}
                   {liveSwitch == true && (
                     <>
-                      <Text textAlign='right' >{infoDataCotatie}</Text>
+                      <Text textAlign="right">{infoDataCotatie}</Text>
                       <HStack
                         justifyContent="space-between"
                         textAlign="left"
@@ -268,270 +278,286 @@ const Home: NextPage = () => {
               </CardBody>
             </Card>
             {!!isSignedIn && (
-            <Card w="99%" alignSelf="center" backgroundColor="white">
-              <CardHeader
-                paddingTop="20px"
-                paddingBottom={0}
-                paddingLeft="20px"
-                paddingRight="20px"
-              >
-                <Heading fontSize="md">Investments</Heading>
-              </CardHeader>
-              {!data && (
-                <Stack padding={4}>
-                  <Skeleton height="15px" />
-                  <Skeleton height="15px" />
-                  <Skeleton height="15px" />
-                  <Skeleton height="15px" />
-                </Stack>
-              )}
-              {data && (
+              <Card w="99%" alignSelf="center" backgroundColor="white">
+                <CardHeader
+                  paddingTop="20px"
+                  paddingBottom={0}
+                  paddingLeft="20px"
+                  paddingRight="20px"
+                >
+                  <Heading fontSize="md">Investments</Heading>
+                </CardHeader>
+                {!data && (
+                  <Stack padding={4}>
+                    <Skeleton height="15px" />
+                    <Skeleton height="15px" />
+                    <Skeleton height="15px" />
+                    <Skeleton height="15px" />
+                  </Stack>
+                )}
+                {data && (
+                  <CardBody>
+                    <Stack divider={<StackDivider />} spacing="3">
+                      {data?.map((post) => (
+                        <HStack
+                          justifyContent="space-between"
+                          textAlign="center"
+                          key={post.id}
+                        >
+                          <Text textColor="black" fontWeight="medium">
+                            {" "}
+                            {post.investAmount} RON
+                          </Text>
+                          <Text textColor="gray.500"> {post.fondName} </Text>
+                          <Text textColor="gray.500">
+                            {" "}
+                            {post.createdAt.toDateString()}{" "}
+                          </Text>
+                          <Button backgroundColor='white' onClick={() => {
+                            mutateDelete(post.id);
+                            }}>
+                            <DeleteIcon textColor='#e9041e'/>
+                          </Button>
+                        </HStack>
+                      ))}
+                    </Stack>
+                  </CardBody>
+                )}
+              </Card>
+            )}
+            {!!isSignedIn && (
+              <Card w="99%" alignSelf="center" backgroundColor="white">
+                <CardHeader
+                  paddingTop="20px"
+                  paddingBottom={0}
+                  paddingLeft="20px"
+                  paddingRight="20px"
+                >
+                  <Heading fontSize="md">Your stats</Heading>
+                </CardHeader>
+                {!data && (
+                  <Stack padding={4}>
+                    <Skeleton height="15px" />
+                    <Skeleton height="15px" />
+                    <Skeleton height="15px" />
+                    <Skeleton height="15px" />
+                  </Stack>
+                )}
                 <CardBody>
                   <Stack divider={<StackDivider />} spacing="3">
-                    {data?.map((post) => (
-                      <HStack
-                        justifyContent="space-between"
-                        textAlign="center"
-                        key={post.id}
+                    <HStack justifyContent="space-between" textAlign="center">
+                      <VStack
+                        alignItems="flex-start"
+                        textAlign="left"
+                        spacing={0}
                       >
-                        <Text textColor="black" fontWeight="medium">
-                          {" "}
-                          {post.investAmount} RON
-                        </Text>
-                        <Text textColor="gray.500"> {post.fondName} </Text>
-                        <Text textColor="gray.500">
-                          {" "}
-                          {post.createdAt.toDateString()}{" "}
-                        </Text>
-                      </HStack>
-                    ))}
+                        {sumActiuni?.map((item) => (
+                          <>
+                            <Text
+                              key={item.fondName}
+                              textColor="black"
+                              fontSize="15"
+                              fontWeight="medium"
+                            >
+                              {item.fondName}:
+                            </Text>
+                            <Text textColor="gray.500" fontSize="2xl">
+                              {item._sum.investAmount} RON
+                            </Text>
+                          </>
+                        ))}
+                        {sumActiuni?.map((item) => (
+                          <>
+                            <Text
+                              key={item.fondName}
+                              textColor="black"
+                              fontSize="15"
+                              fontWeight="medium"
+                            >
+                              Nr. de U.F. deținute:
+                            </Text>
+                            <Text textColor="gray.500" fontSize="2xl">
+                              {item._sum.nrUf?.toFixed(4)} U.F.
+                            </Text>
+                          </>
+                        ))}
+                      </VStack>
+                      {infoUfVal2 && (
+                        <Card
+                          alignItems="center"
+                          padding="1rem"
+                          align="flex-start"
+                          backgroundColor="whatsapp.500"
+                          borderRadius="lg"
+                        >
+                          <VStack
+                            alignItems="center"
+                            align="center"
+                            spacing={0}
+                          >
+                            {sumActiuni?.map((item) => {
+                              const nrUf =
+                                Number(item._sum?.nrUf).toFixed(4) ?? 0;
+                              const ufVal = Number(infoUfVal).toFixed(4) ?? 0;
+                              const investAmount =
+                                Number(item._sum?.investAmount) ?? 0;
+                              const totalInvestment = (
+                                Number(parseFloat(nrUf)) *
+                                Number(parseFloat(ufVal))
+                              ).toFixed(2);
+                              const profit = (
+                                Number(parseFloat(totalInvestment).toFixed(2)) -
+                                investAmount
+                              ).toFixed(2);
+                              return (
+                                <>
+                                  <Text
+                                    textColor="white"
+                                    fontSize="15"
+                                    fontWeight="medium"
+                                  >
+                                    Valoarea totală a investiției:
+                                  </Text>
+                                  <Text
+                                    key={item._sum?.nrUf}
+                                    textColor="white"
+                                    fontSize="2xl"
+                                    fontWeight="medium"
+                                  >
+                                    {totalInvestment} RON
+                                  </Text>
+                                  <Text
+                                    textColor="white"
+                                    fontSize="15"
+                                    fontWeight="medium"
+                                  >
+                                    Profit:
+                                  </Text>
+                                  <Text
+                                    textColor="white"
+                                    fontSize="2xl"
+                                    fontWeight="medium"
+                                  >
+                                    {profit} RON
+                                  </Text>
+                                </>
+                              );
+                            })}
+                          </VStack>
+                        </Card>
+                      )}
+                    </HStack>
                   </Stack>
                 </CardBody>
-              )}
-            </Card>)}
-            {!!isSignedIn && (
-            <Card w="99%" alignSelf="center" backgroundColor="white">
-              <CardHeader
-                paddingTop="20px"
-                paddingBottom={0}
-                paddingLeft="20px"
-                paddingRight="20px"
-              >
-                <Heading fontSize="md">Your stats</Heading>
-              </CardHeader>
-              {!data && (
-                <Stack padding={4}>
-                  <Skeleton height="15px" />
-                  <Skeleton height="15px" />
-                  <Skeleton height="15px" />
-                  <Skeleton height="15px" />
-                </Stack>
-              )}
-              <CardBody>
-                <Stack divider={<StackDivider />} spacing="3">
-                  <HStack justifyContent="space-between" textAlign="center">
-                    <VStack
-                      alignItems="flex-start"
-                      textAlign="left"
-                      spacing={0}
-                    >
-                      {sumActiuni?.map((item) => (
-                        <>
-                          <Text
-                            key={item.fondName}
-                            textColor="black"
-                            fontSize="15"
-                            fontWeight="medium"
-                          >
-                            {item.fondName}:
-                          </Text>
-                          <Text textColor="gray.500" fontSize="2xl">
-                            {item._sum.investAmount} RON
-                          </Text>
-                        </>
-                      ))}
-                      {sumActiuni?.map((item) => (
-                        <>
-                          <Text
-                            key={item.fondName}
-                            textColor="black"
-                            fontSize="15"
-                            fontWeight="medium"
-                          >
-                            Nr. de U.F. deținute:
-                          </Text>
-                          <Text textColor="gray.500" fontSize="2xl">
-                            {item._sum.nrUf?.toFixed(4)} U.F.
-                          </Text>
-                        </>
-                      ))}
-                    </VStack>
-                    {infoUfVal2 && (
-                      <Card
-                        alignItems="center"
-                        padding="1rem"
-                        align="flex-start"
-                        backgroundColor="whatsapp.500"
-                        borderRadius="lg"
+                <CardBody>
+                  <Stack divider={<StackDivider />} spacing="3">
+                    <HStack justifyContent="space-between" textAlign="center">
+                      <VStack
+                        alignItems="flex-start"
+                        textAlign="left"
+                        spacing={0}
                       >
-                        <VStack alignItems="center" align="center" spacing={0}>
-                          {sumActiuni?.map((item) => {
-                            const nrUf =
-                              Number(item._sum?.nrUf).toFixed(4) ?? 0;
-                            const ufVal = Number(infoUfVal).toFixed(4) ?? 0;
-                            const investAmount =
-                              Number(item._sum?.investAmount) ?? 0;
-                            const totalInvestment = (
-                              Number(parseFloat(nrUf)) *
-                              Number(parseFloat(ufVal))
-                            ).toFixed(2);
-                            const profit = (
-                              Number(parseFloat(totalInvestment).toFixed(2)) -
-                              investAmount
-                            ).toFixed(2);
-                            return (
-                              <>
-                                <Text
-                                  textColor="white"
-                                  fontSize="15"
-                                  fontWeight="medium"
-                                >
-                                  Valoarea totală a investiției:
-                                </Text>
-                                <Text
-                                  key={item._sum?.nrUf}
-                                  textColor="white"
-                                  fontSize="2xl"
-                                  fontWeight="medium"
-                                >
-                                  {totalInvestment} RON
-                                </Text>
-                                <Text
-                                  textColor="white"
-                                  fontSize="15"
-                                  fontWeight="medium"
-                                >
-                                  Profit:
-                                </Text>
-                                <Text
-                                  textColor="white"
-                                  fontSize="2xl"
-                                  fontWeight="medium"
-                                >
-                                  {profit} RON
-                                </Text>
-                              </>
-                            );
-                          })}
-                        </VStack>
-                      </Card>
-                    )}
-                  </HStack>
-                </Stack>
-              </CardBody>
-              <CardBody>
-                <Stack divider={<StackDivider />} spacing="3">
-                  <HStack justifyContent="space-between" textAlign="center">
-                    <VStack
-                      alignItems="flex-start"
-                      textAlign="left"
-                      spacing={0}
-                    >
-                      {sumSimfonia?.map((item) => (
-                        <>
-                          <Text
-                            key={item.fondName}
-                            textColor="black"
-                            fontSize="15"
-                            fontWeight="medium"
+                        {sumSimfonia?.map((item) => (
+                          <>
+                            <Text
+                              key={item.fondName}
+                              textColor="black"
+                              fontSize="15"
+                              fontWeight="medium"
+                            >
+                              {item.fondName}:
+                            </Text>
+                            <Text textColor="gray.500" fontSize="2xl">
+                              {item._sum.investAmount} RON
+                            </Text>
+                          </>
+                        ))}
+                        {sumSimfonia?.map((item) => (
+                          <>
+                            <Text
+                              key={item.fondName}
+                              textColor="black"
+                              fontSize="15"
+                              fontWeight="medium"
+                            >
+                              Nr. de U.F. deținute:
+                            </Text>
+                            <Text textColor="gray.500" fontSize="2xl">
+                              {item._sum.nrUf?.toFixed(4)} U.F.
+                            </Text>
+                          </>
+                        ))}
+                      </VStack>
+                      {infoUfVal2 && (
+                        <Card
+                          alignItems="center"
+                          padding="1rem"
+                          align="flex-start"
+                          backgroundColor="whatsapp.500"
+                          borderRadius="lg"
+                        >
+                          <VStack
+                            alignItems="center"
+                            align="center"
+                            spacing={0}
                           >
-                            {item.fondName}:
-                          </Text>
-                          <Text textColor="gray.500" fontSize="2xl">
-                            {item._sum.investAmount} RON
-                          </Text>
-                        </>
-                      ))}
-                      {sumSimfonia?.map((item) => (
-                        <>
-                          <Text
-                            key={item.fondName}
-                            textColor="black"
-                            fontSize="15"
-                            fontWeight="medium"
-                          >
-                            Nr. de U.F. deținute:
-                          </Text>
-                          <Text textColor="gray.500" fontSize="2xl">
-                            {item._sum.nrUf?.toFixed(4)} U.F.
-                          </Text>
-                        </>
-                      ))}
-                    </VStack>
-                    {infoUfVal2 && (
-                      <Card
-                        alignItems="center"
-                        padding="1rem"
-                        align="flex-start"
-                        backgroundColor="whatsapp.500"
-                        borderRadius="lg"
-                      >
-                        <VStack alignItems="center" align="center" spacing={0}>
-                          {sumSimfonia?.map((item) => {
-                            const nrUf =
-                              Number(item._sum?.nrUf).toFixed(4) ?? 0;
-                            const ufVal2 = Number(infoUfVal2).toFixed(4) ?? 0;
-                            const investAmount =
-                              Number(item._sum?.investAmount) ?? 0;
-                            const totalInvestment2 = (
-                              Number(parseFloat(nrUf)) *
-                              Number(parseFloat(ufVal2))
-                            ).toFixed(2);
-                            const profit2 = (
-                              Number(parseFloat(totalInvestment2).toFixed(2)) -
-                              investAmount
-                            ).toFixed(2);
-                            return (
-                              <>
-                                <Text
-                                  textColor="white"
-                                  fontSize="15"
-                                  fontWeight="medium"
-                                >
-                                  Valoarea totală a investiției:
-                                </Text>
-                                <Text
-                                  key={item._sum?.nrUf}
-                                  textColor="white"
-                                  fontSize="2xl"
-                                  fontWeight="medium"
-                                >
-                                  {totalInvestment2} RON
-                                </Text>
-                                <Text
-                                  textColor="white"
-                                  fontSize="15"
-                                  fontWeight="medium"
-                                >
-                                  Profit:
-                                </Text>
-                                <Text
-                                  textColor="white"
-                                  fontSize="2xl"
-                                  fontWeight="medium"
-                                >
-                                  {profit2} RON
-                                </Text>
-                              </>
-                            );
-                          })}
-                        </VStack>
-                      </Card>
-                    )}
-                  </HStack>
-                </Stack>
-              </CardBody>
-            </Card>)}
+                            {sumSimfonia?.map((item) => {
+                              const nrUf =
+                                Number(item._sum?.nrUf).toFixed(4) ?? 0;
+                              const ufVal2 = Number(infoUfVal2).toFixed(4) ?? 0;
+                              const investAmount =
+                                Number(item._sum?.investAmount) ?? 0;
+                              const totalInvestment2 = (
+                                Number(parseFloat(nrUf)) *
+                                Number(parseFloat(ufVal2))
+                              ).toFixed(2);
+                              const profit2 = (
+                                Number(
+                                  parseFloat(totalInvestment2).toFixed(2)
+                                ) - investAmount
+                              ).toFixed(2);
+                              return (
+                                <>
+                                  <Text
+                                    textColor="white"
+                                    fontSize="15"
+                                    fontWeight="medium"
+                                  >
+                                    Valoarea totală a investiției:
+                                  </Text>
+                                  <Text
+                                    key={item._sum?.nrUf}
+                                    textColor="white"
+                                    fontSize="2xl"
+                                    fontWeight="medium"
+                                  >
+                                    {totalInvestment2} RON
+                                  </Text>
+                                  <Text
+                                    textColor="white"
+                                    fontSize="15"
+                                    fontWeight="medium"
+                                  >
+                                    Profit:
+                                  </Text>
+                                  <Text
+                                    textColor="white"
+                                    fontSize="2xl"
+                                    fontWeight="medium"
+                                  >
+                                    {profit2} RON
+                                  </Text>
+                                </>
+                              );
+                            })}
+                          </VStack>
+                        </Card>
+                      )}
+                    </HStack>
+                  </Stack>
+                </CardBody>
+              </Card>
+            )}
           </Stack>
           <HStack
             justifyContent="center"
@@ -541,14 +567,16 @@ const Home: NextPage = () => {
             shadow="md"
           >
             <VStack>
-            {!!isSignedIn && (<Button
-                leftIcon={<AddIcon />}
-                backgroundColor="#e9041e"
-                textColor="white"
-                onClick={onOpen}
-              >
-                New Investment
-              </Button>)}
+              {!!isSignedIn && (
+                <Button
+                  leftIcon={<AddIcon />}
+                  backgroundColor="#e9041e"
+                  textColor="white"
+                  onClick={onOpen}
+                >
+                  New Investment
+                </Button>
+              )}
               <Drawer isOpen={isOpen} placement="bottom" onClose={onClose}>
                 <DrawerOverlay />
                 <DrawerContent>
@@ -564,19 +592,21 @@ const Home: NextPage = () => {
                           id="investDate"
                           type="date"
                           focusBorderColor="black"
-                          defaultValue = {new Date().toISOString().slice(0, 10)}
+                          defaultValue={new Date().toISOString().slice(0, 10)}
                         />
                       </Box>
                       <Box>
                         <FormLabel htmlFor="investAmount">Amount</FormLabel>
                         <NumberInput focusBorderColor="black">
-                        <NumberInputField
-                          id="investAmount"
-                          type="number"
-                          placeholder="Please enter the investment amount"
-                          value={inputAmount}
-                          onChange={(e) => setInputAmount(Number(e.target.value))}
-                        />
+                          <NumberInputField
+                            id="investAmount"
+                            type="number"
+                            placeholder="Please enter the investment amount"
+                            value={inputAmount}
+                            onChange={(e) =>
+                              setInputAmount(Number(e.target.value))
+                            }
+                          />
                         </NumberInput>
                       </Box>
                       <Box>
@@ -588,8 +618,12 @@ const Home: NextPage = () => {
                           value={inputFond}
                           onChange={(e) => setInputFond(e.target.value)}
                         >
-                          <option id="Sim" value="BRD Simfonia">BRD Simfonia</option>
-                          <option id="Act" value="BRD Actiuni">BRD Actiuni</option>
+                          <option id="Sim" value="BRD Simfonia">
+                            BRD Simfonia
+                          </option>
+                          <option id="Act" value="BRD Actiuni">
+                            BRD Actiuni
+                          </option>
                         </Select>
                       </Box>
                     </Stack>
@@ -599,17 +633,18 @@ const Home: NextPage = () => {
                       Cancel
                     </Button>
                     <Button
-                    backgroundColor="#e9041e"
-                    textColor="white"
-                    onClick={() => {
-                      mutate({
-                        investAmount: inputAmount ?? 0,
-                        fondName: inputFond,
-                        nrUf: calculateUf(),
-                        ufValue: ufValue(),
-                      });
-                      onClose();
-                    }}>
+                      backgroundColor="#e9041e"
+                      textColor="white"
+                      onClick={() => {
+                        mutate({
+                          investAmount: inputAmount ?? 0,
+                          fondName: inputFond,
+                          nrUf: calculateUf(),
+                          ufValue: ufValue(),
+                        });
+                        onClose();
+                      }}
+                    >
                       Invest
                     </Button>
                   </DrawerFooter>
