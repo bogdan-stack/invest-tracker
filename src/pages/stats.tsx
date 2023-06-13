@@ -36,9 +36,10 @@ const procentProfit = totalSim && totalAct ? (totalInvestAct + totalInvestSim) /
 const profitTotal = profitAct + profitSim;
 
 
+
+
+
   return (
-    <motion.div
-    >
       <Stack spacing={3}>
         <VStack spacing={3} alignItems='flex-start' justifyContent='left'>
           <Image src={BRDlogoAM} alt="BRD logo" width={200} height={200} />
@@ -46,20 +47,26 @@ const profitTotal = profitAct + profitSim;
         <HStack justifyContent="center">
           <StatGroup>
             <Stat textAlign="center">
-              <StatLabel>Profit Portofoliu</StatLabel>
               {infoUfVal && (
               <>
+              <motion.div
+              initial={{ opacity: 0, y: 15}}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 15 }}
+              transition={{ delay: 0.75 }}
+              >
+              <StatLabel>Profit Portofoliu</StatLabel>
               <StatNumber>{profitTotal.toFixed(2).toString()} RON</StatNumber>
               <StatHelpText>
                 <StatArrow type="increase" />
                 {procentProfit.toFixed(2).toString()}%
               </StatHelpText>
+              </motion.div>
               </>)}
             </Stat>
           </StatGroup>
         </HStack>
       </Stack>
-    </motion.div>
   );
 };
 
