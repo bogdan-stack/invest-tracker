@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 import Image from 'next/image';
 import BRDlogoAM from "../../public/ico_logo-mob.svg";
+import { motion } from "framer-motion";
 
 type StatsPageProps = {
   totalSim: string | undefined;
@@ -36,7 +37,8 @@ const profitTotal = profitAct + profitSim;
 
 
   return (
-    <div>
+    <motion.div
+    >
       <Stack spacing={3}>
         <VStack spacing={3} alignItems='flex-start' justifyContent='left'>
           <Image src={BRDlogoAM} alt="BRD logo" width={200} height={200} />
@@ -57,7 +59,7 @@ const profitTotal = profitAct + profitSim;
           </StatGroup>
         </HStack>
       </Stack>
-    </div>
+    </motion.div>
   );
 };
 

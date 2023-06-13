@@ -4,6 +4,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import { Source_Sans_Pro } from '@next/font/google';
+import { motion, AnimatePresence } from "framer-motion";
 
 
 const sourceSans = Source_Sans_Pro({
@@ -15,11 +16,20 @@ const sourceSans = Source_Sans_Pro({
 const MyApp: AppType = ({ Component, pageProps }) => {
   return  (
     <main className={sourceSans.className}>
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0, y: 15}}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 15 }}
+        transition={{ delay: 0.5 }}
+        >
     <ChakraProvider>
     <ClerkProvider {...pageProps}>
       <Component {...pageProps} />
     </ClerkProvider>
     </ChakraProvider>
+    </motion.div>
+    </AnimatePresence>
     </main>
   );
 };

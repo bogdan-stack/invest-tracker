@@ -42,6 +42,7 @@ import {
   ArrowRightOnRectangleIcon,
   XCircleIcon,
 } from "@heroicons/react/24/solid";
+import {motion} from "framer-motion";
 
 const Home: NextPage = () => {
   const [infoUfVal, setInfo] = useState<string>("");
@@ -79,6 +80,7 @@ const Home: NextPage = () => {
   const { data: sumSimfonia } = api.example.getSumSim.useQuery();
   const totalSim = sumSimfonia?.[0]?._sum.investAmount?.toString();
   const totalUfSim = sumSimfonia?.[0]?._sum.nrUf?.toString();
+
   const { data: sumActiuni } = api.example.getSumAct.useQuery();
   const totalAct = sumActiuni?.[0]?._sum.investAmount?.toString();
   const totalUfAct = sumActiuni?.[0]?._sum.nrUf?.toString();
@@ -99,12 +101,33 @@ const Home: NextPage = () => {
     }
   };
 
+  const container = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.3
+      }
+    }
+  }
 
+  const item = {
+    hidden: {
+      opacity: 0,
+      x: 30 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 1
+      },
+    }
+  }
 
   const getInfo = async () => {
     setLiveSwitch(false);
-    const res = await fetch('https://invest-tracker-nine.vercel.app/api/trpc/getInfo')
-    //const res = await fetch("http://localhost:3000/api/trpc/getInfo");
+    //const res = await fetch('https://invest-tracker-nine.vercel.app/api/trpc/getInfo')
+    const res = await fetch("http://localhost:3000/api/trpc/getInfo");
     const {
       infoUfVal,
       infoFoName,
@@ -194,6 +217,11 @@ const Home: NextPage = () => {
         </Stack>
         <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
         <Stack backgroundColor="#fafafa" display="flex" flexDirection="column">
+        <motion.div
+          variants={container}
+          initial="hidden"
+          animate="visible"
+          >
           <Stack justifyContent="center" p={3}>
             {!!isSignedIn && (
               <StatsPage
@@ -205,6 +233,9 @@ const Home: NextPage = () => {
                 infoUfVal={infoUfVal}
               />
             )}
+            <motion.div
+              variants={item}
+              >
             <Card w="99%" alignSelf="center" backgroundColor="white">
               <CardHeader
                 paddingTop="20px"
@@ -215,6 +246,9 @@ const Home: NextPage = () => {
                 <Heading fontSize="md">Live Info</Heading>
               </CardHeader>
               <CardBody>
+              <motion.div
+              variants={item}
+              >
                 <Stack divider={<StackDivider />} spacing="3">
                   {liveSwitch == false && (
                     <Stack padding={0}>
@@ -226,7 +260,10 @@ const Home: NextPage = () => {
                   )}
                   {liveSwitch == true && (
                     <>
-                      <Text textAlign="right">{infoDataCotatie}</Text>
+                    <motion.div
+                      variants={item}
+                    >
+                      <Text textAlign="center">{infoDataCotatie}</Text>
                       <HStack
                         justifyContent="space-between"
                         textAlign="left"
@@ -265,6 +302,7 @@ const Home: NextPage = () => {
                           {parseFloat(infoUfVal2)} RON
                         </Text>
                       </HStack>
+                      </motion.div>
                     </>
                   )}
                   <Button
@@ -275,9 +313,14 @@ const Home: NextPage = () => {
                     Live Feed
                   </Button>
                 </Stack>
+                </motion.div>
               </CardBody>
             </Card>
+            </motion.div>
             {!!isSignedIn && (
+              <motion.div
+              variants={item}
+              >
               <Card w="99%" alignSelf="center" backgroundColor="white">
                 <CardHeader
                   paddingTop="20px"
@@ -297,6 +340,9 @@ const Home: NextPage = () => {
                 )}
                 {data && (
                   <CardBody>
+                    <motion.div
+                      variants={item}
+                    >
                     <Stack divider={<StackDivider />} spacing="3">
                       {data?.map((post) => (
                         <HStack
@@ -321,11 +367,16 @@ const Home: NextPage = () => {
                         </HStack>
                       ))}
                     </Stack>
+                    </motion.div>
                   </CardBody>
                 )}
               </Card>
+              </motion.div>
             )}
             {!!isSignedIn && (
+              <motion.div
+              variants={item}
+              >
               <Card w="99%" alignSelf="center" backgroundColor="white">
                 <CardHeader
                   paddingTop="20px"
@@ -383,6 +434,9 @@ const Home: NextPage = () => {
                         ))}
                       </VStack>
                       {infoUfVal2 && (
+                        <motion.div
+                        variants={item}
+                        >
                         <Card
                           alignItems="center"
                           padding="1rem"
@@ -445,6 +499,7 @@ const Home: NextPage = () => {
                             })}
                           </VStack>
                         </Card>
+                        </motion.div>
                       )}
                     </HStack>
                   </Stack>
@@ -489,6 +544,9 @@ const Home: NextPage = () => {
                         ))}
                       </VStack>
                       {infoUfVal2 && (
+                        <motion.div
+                        variants={item}
+                        >
                         <Card
                           alignItems="center"
                           padding="1rem"
@@ -552,11 +610,13 @@ const Home: NextPage = () => {
                             })}
                           </VStack>
                         </Card>
+                        </motion.div>
                       )}
                     </HStack>
                   </Stack>
                 </CardBody>
               </Card>
+              </motion.div>
             )}
           </Stack>
           <HStack
@@ -652,6 +712,7 @@ const Home: NextPage = () => {
               </Drawer>
             </VStack>
           </HStack>
+          </motion.div>
         </Stack>
       </main>
     </>
