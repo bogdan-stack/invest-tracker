@@ -4,7 +4,7 @@ import React from 'react'
 
 const budget = () => {
   return (
-    <h1>budget</h1>
+    <h1>BUDGET</h1>
   )
 }
 

@@ -51,13 +51,13 @@ const autoSign = profitSign();
 
 
   return (
-      <Stack spacing={3}>
-        <VStack spacing={3} alignItems='flex-start' justifyContent='left'>
+      <Stack spacing={3} position="unset">
+        <VStack spacing={3} alignItems='flex-start' justifyContent='left' position="unset">
           <Image src={BRDlogoAM} alt="BRD logo" width={200} height={200} />
         </VStack>
-        <HStack justifyContent="center">
-          <StatGroup>
-            <Stat textAlign="center">
+        <HStack justifyContent="center" position="unset">
+          <StatGroup position="unset">
+            <Stat textAlign="center" position="unset">
               {infoUfVal && (
               <>
               <motion.div
@@ -66,12 +66,10 @@ const autoSign = profitSign();
               exit={{ opacity: 0, y: 15 }}
               transition={{ delay: 0.75 }}
               >
-              <StatLabel>Profit Portofoliu</StatLabel>
-              <StatNumber>{profitTotal.toFixed(2).toString()} RON</StatNumber>
-              <StatHelpText>
-                <StatArrow type={autoSign} />
+              <StatLabel position="unset">Profit Portofoliu</StatLabel>
+              <StatNumber position="unset">{profitTotal.toFixed(2).toString()} RON</StatNumber>
+                <StatArrow position="unset" type={autoSign} />
                 {procentProfitTotal.toFixed(2).toString()}%
-              </StatHelpText>
               </motion.div>
               </>)}
             </Stat>

@@ -157,65 +157,6 @@ const Home: NextPage = () => {
       </Head>
       <main>
         <Stack>
-          <HStack
-            backgroundColor="white"
-            display="flex"
-            position="sticky"
-            justifyContent="space-between"
-            padding="3"
-            paddingBottom={1}
-            paddingTop={1}
-            shadow="md"
-          >
-            {!isSignedIn && (
-              <>
-                <Text>Please sign in!</Text>
-                <SignInButton>
-                  <Button
-                    backgroundColor="#e9041e"
-                    textColor="white"
-                    fontSize="sm"
-                    padding="1.5"
-                    height="-webkit-fit-content"
-                    alignSelf="center"
-                  >
-                    <ArrowLeftOnRectangleIcon
-                      className="h-6 w-6"
-                      aria-hidden="true"
-                    />
-                  </Button>
-                </SignInButton>
-              </>
-            )}
-            {!!isSignedIn && (
-              <Avatar size="sm" bg="#e9041e">
-                <AvatarBadge boxSize="1.25em" bg="green.500" />
-              </Avatar>
-            )}
-
-            {!!isSignedIn && (
-              <Text padding={2} textColor="black" fontWeight="bold">
-                 {message}
-              </Text>
-            )}
-            {!!isSignedIn && (
-              <SignOutButton>
-                <Button
-                  backgroundColor="#e9041e"
-                  textColor="white"
-                  fontSize="sm"
-                  padding="1.5"
-                  height="-webkit-fit-content"
-                  alignSelf="center"
-                >
-                  <ArrowRightOnRectangleIcon
-                    className="h-6 w-6"
-                    aria-hidden="true"
-                  />
-                </Button>
-              </SignOutButton>
-            )}
-          </HStack>
         </Stack>
         <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
         <Stack backgroundColor="#fafafa" display="flex" flexDirection="column">
@@ -232,7 +173,7 @@ const Home: NextPage = () => {
                 />
               )}
               <motion.div variants={container}>
-                <Card w="99%" alignSelf="center" backgroundColor="white">
+                <Card w="99%" alignSelf="center" backgroundColor="white" position='unset'>
                   <CardHeader
                     paddingTop="20px"
                     paddingBottom={0}
@@ -301,6 +242,7 @@ const Home: NextPage = () => {
                           backgroundColor="#e9041e"
                           textColor="white"
                           onClick={getInfo}
+                          position="unset"
                         >
                           Live Feed
                         </Button>
@@ -311,7 +253,7 @@ const Home: NextPage = () => {
               </motion.div>
               {!!isSignedIn && (
                 <motion.div variants={container}>
-                  <Card w="99%" alignSelf="center" backgroundColor="white">
+                  <Card w="99%" alignSelf="center" backgroundColor="white" position="unset">
                     <CardHeader
                       paddingTop="20px"
                       paddingBottom={0}
@@ -321,15 +263,15 @@ const Home: NextPage = () => {
                       <Heading fontSize="md">Investments</Heading>
                     </CardHeader>
                     {!data && (
-                      <Stack padding={4}>
-                        <Skeleton height="15px" />
-                        <Skeleton height="15px" />
-                        <Skeleton height="15px" />
-                        <Skeleton height="15px" />
+                      <Stack position="unset" padding={4}>
+                        <Skeleton position="unset" height="15px" />
+                        <Skeleton position="unset" height="15px" />
+                        <Skeleton position="unset" height="15px" />
+                        <Skeleton position="unset" height="15px" />
                       </Stack>
                     )}
                     {data && (
-                      <CardBody>
+                      <CardBody position="unset">
                         <motion.div variants={item}>
                           <Stack divider={<StackDivider />} spacing="3">
                             {data?.map((post) => (
@@ -351,12 +293,13 @@ const Home: NextPage = () => {
                                   {post.createdAt.toDateString()}{" "}
                                 </Text>
                                 <Button
+                                  position="unset"
                                   backgroundColor="white"
                                   onClick={() => {
                                     mutateDelete(post.id);
                                   }}
                                 >
-                                  <DeleteIcon textColor="#e9041e" />
+                                  <DeleteIcon position="unset" textColor="#e9041e" />
                                 </Button>
                               </HStack>
                             ))}
@@ -369,7 +312,7 @@ const Home: NextPage = () => {
               )}
               {!!isSignedIn && (
                 <motion.div variants={container}>
-                  <Card w="99%" alignSelf="center" backgroundColor="white">
+                  <Card position="unset" w="99%" alignSelf="center" backgroundColor="white">
                     <CardHeader
                       paddingTop="20px"
                       paddingBottom={0}
@@ -387,7 +330,7 @@ const Home: NextPage = () => {
                           <Skeleton height="15px" />
                         </Stack>
                       )}
-                        <CardBody>
+                        <CardBody position="unset">
                           <Stack divider={<StackDivider />} spacing="3">
                             <HStack
                               justifyContent="space-between"
@@ -434,6 +377,7 @@ const Home: NextPage = () => {
                               {infoUfVal2 && (
                                 <motion.div variants={item}>
                                   <Card
+                                    position="unset"
                                     alignItems="center"
                                     padding="1rem"
                                     align="flex-start"
@@ -550,6 +494,7 @@ const Home: NextPage = () => {
                               {infoUfVal2 && (
                                 <motion.div variants={item}>
                                   <Card
+                                  position="unset"
                                     alignItems="center"
                                     padding="1rem"
                                     align="flex-start"
@@ -626,99 +571,6 @@ const Home: NextPage = () => {
                 </motion.div>
               )}
             </Stack>
-            <HStack
-              justifyContent="center"
-              backgroundColor="white"
-              p={1}
-              marginTop="auto"
-              shadow="md"
-            >
-              <VStack>
-                {!!isSignedIn && (
-                  <Button
-                    leftIcon={<AddIcon />}
-                    backgroundColor="#e9041e"
-                    textColor="white"
-                    onClick={onOpen}
-                  >
-                    New Investment
-                  </Button>
-                )}
-                <Drawer isOpen={isOpen} placement="bottom" onClose={onClose}>
-                  <DrawerOverlay />
-                  <DrawerContent>
-                    <DrawerCloseButton />
-                    <DrawerHeader borderBottomWidth="1px">
-                      Make New Investment
-                    </DrawerHeader>
-                    <DrawerBody>
-                      <Stack spacing="24px">
-                        <Box>
-                          <FormLabel htmlFor="investDate">Date</FormLabel>
-                          <Input
-                            id="investDate"
-                            type="date"
-                            focusBorderColor="black"
-                            defaultValue={new Date().toISOString().slice(0, 10)}
-                          />
-                        </Box>
-                        <Box>
-                          <FormLabel htmlFor="investAmount">Amount</FormLabel>
-                          <NumberInput focusBorderColor="black">
-                            <NumberInputField
-                              id="investAmount"
-                              type="number"
-                              placeholder="Please enter the investment amount"
-                              value={inputAmount}
-                              onChange={(e) =>
-                                setInputAmount(Number(e.target.value))
-                              }
-                            />
-                          </NumberInput>
-                        </Box>
-                        <Box>
-                          <FormLabel htmlFor="investFond">Found</FormLabel>
-                          <Select
-                            id="investFond"
-                            placeholder="Select a found"
-                            focusBorderColor="black"
-                            value={inputFond}
-                            onChange={(e) => setInputFond(e.target.value)}
-                          >
-                            <option id="Sim" value="BRD Simfonia">
-                              BRD Simfonia
-                            </option>
-                            <option id="Act" value="BRD Actiuni">
-                              BRD Actiuni
-                            </option>
-                          </Select>
-                        </Box>
-                      </Stack>
-                    </DrawerBody>
-                    <DrawerFooter borderTopWidth="1px">
-                      <Button variant="outline" mr={3} onClick={onClose}>
-                        Cancel
-                      </Button>
-                      <Button
-                        backgroundColor="#e9041e"
-                        textColor="white"
-                        onClick={() => {
-                          mutate({
-                            investAmount: inputAmount ?? 0,
-                            fondName: inputFond,
-                            nrUf: calculateUf(),
-                            ufValue: ufValue(),
-                          });
-                          onClose();
-                        }}
-                      >
-                        Invest
-                      </Button>
-                    </DrawerFooter>
-                  </DrawerContent>
-                </Drawer>
-              </VStack>
-            </HStack>
           </motion.div>
         </Stack>
       </main>

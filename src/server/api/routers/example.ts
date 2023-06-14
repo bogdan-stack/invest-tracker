@@ -1,3 +1,4 @@
+
 import { z } from "zod";
 
 import { createTRPCRouter, privateProcedure, publicProcedure } from "~/server/api/trpc";
@@ -6,7 +7,7 @@ export const exampleRouter = createTRPCRouter({
   hello: publicProcedure
     .query(async({ ctx }) => {
       return{
-        greeting: `Hello, ${ await ctx.user?.firstName}!`,
+        greeting: `Hello, ${ ctx.user?.firstName}!`,
       };
     }),
   getAll: publicProcedure.query(async ({ ctx }) => {

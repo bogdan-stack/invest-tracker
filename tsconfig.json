@@ -28,6 +28,6 @@
     "**/*.tsx",
     "**/*.cjs",
     "**/*.mjs"
-  ],
+, "src/components/Navbtn.jsx"  ],
   "exclude": ["node_modules"]
 }
