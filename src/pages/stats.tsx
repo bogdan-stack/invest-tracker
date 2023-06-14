@@ -32,9 +32,20 @@ const profitAct = totalUfAct && totalAct ? totalInvestAct - Number(totalAct) : 0
 const totalInvestSim =  totalUfSim ? Number(parseFloat(totalUfSim)) * Number(parseFloat(infoUfVal2)) : 0;
 const profitSim = totalUfSim && totalAct ? totalInvestSim - Number(totalSim) : 0;
 
-const procentProfit = totalSim && totalAct ? (totalInvestAct + totalInvestSim) / (Number(totalAct) + Number(totalSim)) : 0;
-const profitTotal = profitAct + profitSim;
+const procentProfit = totalSim && totalAct ?  (Number(totalAct) + Number(totalSim))/(totalInvestAct + totalInvestSim)  : 0;
 
+const profitTotal = profitAct + profitSim;
+const procentProfitTotal = profitTotal/(Number(totalAct) + Number(totalSim))*100;
+
+const profitSign = () => {
+  if (procentProfitTotal > 0) {
+    return "increase";
+  } else {
+    return "decrease"
+  }
+}
+
+const autoSign = profitSign();
 
 
 
@@ -58,8 +69,8 @@ const profitTotal = profitAct + profitSim;
               <StatLabel>Profit Portofoliu</StatLabel>
               <StatNumber>{profitTotal.toFixed(2).toString()} RON</StatNumber>
               <StatHelpText>
-                <StatArrow type="increase" />
-                {procentProfit.toFixed(2).toString()}%
+                <StatArrow type={autoSign} />
+                {procentProfitTotal.toFixed(2).toString()}%
               </StatHelpText>
               </motion.div>
               </>)}

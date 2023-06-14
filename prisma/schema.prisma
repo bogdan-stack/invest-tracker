@@ -12,6 +12,8 @@ generator client {
 
 model Post {
     id        String   @id @default(cuid())
+    firstName String  @default("")
+    lastName  String  @default("")
     createdAt DateTime @default(now())
 
     investAt   DateTime @default(now())

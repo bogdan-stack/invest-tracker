@@ -15,24 +15,37 @@
  * These allow you to access things when processing a request, like the database, the session, etc.
  */
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
-
 import { prisma } from "~/server/db";
+import { User } from "@clerk/nextjs/api";
 
+interface UserProps {
+  user: User | null;
+}
+
+export const createContextInner =async ({user}: UserProps) => {
+return {user}
+}
 /**
  * This is the actual context you will use in your router. It will be used to process every request
  * that goes through your tRPC endpoint.
  *
  * @see https://trpc.io/docs/context
  */
-export const createTRPCContext = (opts: CreateNextContextOptions) => {
+export const createTRPCContext = async(opts: CreateNextContextOptions) => {
   const {req} = opts;
   const sesh = getAuth(req);
 
   const userId = sesh.userId;
+  async function getUser() {
+    const user = userId ? await clerkClient.users.getUser(userId) : null;
+    return user
+  }
+  const user = await getUser();
 
   return {
     prisma,
     userId,
+    user,
   };
 };
 
@@ -46,7 +59,7 @@ export const createTRPCContext = (opts: CreateNextContextOptions) => {
 import { TRPCError, initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
-import { getAuth } from "@clerk/nextjs/server";
+import { getAuth , clerkClient} from "@clerk/nextjs/server";
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,

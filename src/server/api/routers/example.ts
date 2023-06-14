@@ -5,16 +5,14 @@ import { createTRPCRouter, privateProcedure, publicProcedure } from "~/server/ap
 
 export const exampleRouter = createTRPCRouter({
   hello: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
+    .query(({ ctx }) => {
       return {
-        greeting: `Hello ${input.text}`,
+        greeting: `Hello, ${ctx.user?.firstName}!`,
       };
     }),
   getAll: publicProcedure.query(async ({ ctx }) => {
     const transactii = await ctx.prisma.post.findMany({
-      take: 5,
-      where: {userId: 'user_2NqTdK2ITSsjuQNBqD6cKbj1cLf'},
+      where: {userId: ctx.userId!},
       orderBy: { investAt: 'desc' },
     });
     return transactii;
@@ -24,6 +22,7 @@ export const exampleRouter = createTRPCRouter({
       by: ['fondName'],
         where: {
           fondName: 'BRD Simfonia',
+          userId: ctx.userId!,
         },
         _sum: {
           investAmount: true,
@@ -36,6 +35,7 @@ export const exampleRouter = createTRPCRouter({
       by: ['fondName'],
         where: {
           fondName: 'BRD Actiuni',
+          userId: ctx.userId!,
         },
         _sum: {
           investAmount: true,

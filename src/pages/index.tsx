@@ -75,6 +75,7 @@ const Home: NextPage = () => {
 
   const { isLoaded: userLoaded, isSignedIn } = useUser();
 
+  const message = api.example.hello.useQuery().data?.greeting;
   const { data } = api.example.getAll.useQuery();
 
   const { data: sumSimfonia } = api.example.getSumSim.useQuery();
@@ -194,7 +195,7 @@ const Home: NextPage = () => {
 
             {!!isSignedIn && (
               <Text padding={2} textColor="black" fontWeight="bold">
-                Hello Bogdan!
+                 {message}
               </Text>
             )}
             {!!isSignedIn && (
