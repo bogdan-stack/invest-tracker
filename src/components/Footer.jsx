@@ -1,9 +1,15 @@
 import React from 'react'
 import { useState, useEffect } from "react";
-import { Button, HStack, VStack, Box, FormLabel, Input, NumberInput, NumberInputField, Select, Stack, Drawer, DrawerBody, DrawerFooter, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton, useDisclosure } from '@chakra-ui/react'
+import { Text, Button, HStack, VStack, Box, FormLabel, Input, NumberInput, NumberInputField, Select, Stack, Drawer, DrawerBody, DrawerFooter, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton, useDisclosure } from '@chakra-ui/react'
 import { SignIn, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
 import { api } from "~/utils/api";
+import {
+    BanknotesIcon,
+    ChartBarSquareIcon,
+    HomeIcon
+  } from "@heroicons/react/24/outline";
+import Link from 'next/link';
 
 const Footer = () => {
     const [infoUfVal, setInfo] = useState("");
@@ -69,24 +75,51 @@ const Footer = () => {
 
   return (
     <HStack
+    display="flex"
     position="sticky"
     bottom="0"
     justifyContent="center"
     backgroundColor="white"
     p={1}
-    marginTop="auto"
-    shadow="md"
+    boxShadow="dark-lg"
   >
-    <VStack>
+     <VStack p={3} alignItems="center"justifyItems="center" spacing={2}>
       {!!isSignedIn && (
+        <>
         <Button
-          leftIcon={<AddIcon />}
-          backgroundColor="#e9041e"
-          textColor="white"
+          h={0}
+          backgroundColor="white"
+          fontWeight="normal"
+          textColor="#e9041e"
+        >
+          <HomeIcon className="w-5 h-5 text-brd-red" />
+        </Button>
+        <Link href="/">
+        <VStack spacing={1.5}>
+        <Text textColor="#e9041e" h={1} fontSize={11}>Home</Text>
+        <Text textColor="#e9041e" h={1} fontSize={11}></Text>
+        </VStack>
+        </Link>
+        </>
+      )}
+      </VStack>
+    <VStack p={3} alignItems="center"justifyItems="center" spacing={2}>
+      {!!isSignedIn && (
+        <>
+        <Button
+          h={0}
+          backgroundColor="white"
+          fontWeight="normal"
+          textColor="#e9041e"
           onClick={onOpen}
         >
-          New Investment
+          <BanknotesIcon className="w-5 h-5 text-brd-red" />
         </Button>
+        <VStack spacing={1.5}>
+        <Text textColor="#e9041e" h={1} fontSize={11}>New</Text>
+        <Text textColor="#e9041e" h={1} fontSize={11}>Investment</Text>
+        </VStack>
+        </>
       )}
       <Drawer isOpen={isOpen} placement="bottom" onClose={onClose}>
         <DrawerOverlay />
@@ -164,6 +197,26 @@ const Footer = () => {
         </DrawerContent>
       </Drawer>
     </VStack>
+    <VStack p={3} alignItems="center"justifyItems="center" spacing={2}>
+      {!!isSignedIn && (
+        <>
+        <Button
+          h={0}
+          backgroundColor="white"
+          fontWeight="normal"
+          textColor="#e9041e"
+        >
+          <ChartBarSquareIcon className="w-5 h-5 text-brd-red" />
+        </Button>
+        <Link href="/budget">
+        <VStack spacing={1.5}>
+        <Text textColor="#e9041e" h={1} fontSize={11}>Budget</Text>
+        <Text textColor="#e9041e" h={1} fontSize={11}>Dashboard</Text>
+        </VStack>
+        </Link>
+        </>
+      )}
+      </VStack>
   </HStack>
   )
 }
