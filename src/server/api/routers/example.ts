@@ -5,9 +5,9 @@ import { createTRPCRouter, privateProcedure, publicProcedure } from "~/server/ap
 
 export const exampleRouter = createTRPCRouter({
   hello: publicProcedure
-    .query(({ ctx }) => {
-      return {
-        greeting: `Hello, ${ctx.user?.firstName}!`,
+    .query(async({ ctx }) => {
+      return{
+        greeting: `Hello, ${ ctx.user?.firstName}!`,
       };
     }),
   getAll: publicProcedure.query(async ({ ctx }) => {
