@@ -43,6 +43,7 @@ import {
   XCircleIcon,
 } from "@heroicons/react/24/solid";
 import { motion } from "framer-motion";
+import { Main } from "next/document";
 
 const Home: NextPage = () => {
   const [infoUfVal, setInfo] = useState<string>("");
@@ -155,11 +156,9 @@ const Home: NextPage = () => {
         <meta name="description" content="Investment Tracker App" />
         <link rel="icon" href="/ico_logo-mob.svg" />
       </Head>
-      <main>
         <Stack>
-        </Stack>
         <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
-        <Stack backgroundColor="#fafafa" display="flex" flexDirection="column">
+        <Stack  backgroundColor="#fafafa" display="flex" flexDirection="column">
           <motion.div variants={container} initial="hidden" animate="visible">
             <Stack justifyContent="center" p={3}>
               {!!isSignedIn && (
@@ -172,6 +171,7 @@ const Home: NextPage = () => {
                   infoUfVal={infoUfVal}
                 />
               )}
+              {!!isSignedIn && (
               <motion.div variants={container}>
                 <Card w="99%" alignSelf="center" backgroundColor="white" position='unset'>
                   <CardHeader
@@ -250,7 +250,7 @@ const Home: NextPage = () => {
                     </motion.div>
                   </CardBody>
                 </Card>
-              </motion.div>
+              </motion.div>)}
               {!!isSignedIn && (
                 <motion.div variants={container}>
                   <Card w="99%" alignSelf="center" backgroundColor="white" position="unset">
@@ -573,7 +573,7 @@ const Home: NextPage = () => {
             </Stack>
           </motion.div>
         </Stack>
-      </main>
+      </Stack>
     </>
   );
 };

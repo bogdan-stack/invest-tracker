@@ -54,6 +54,7 @@ export const exampleRouter = createTRPCRouter({
     const post = await ctx.prisma.post.create({
       data: {
         userId,
+        firstName: ctx.user?.firstName?.toString(),
         fondName: input.fondName,
         investAmount: input.investAmount,
         nrUf: parseFloat(input.nrUf.toFixed(4)),

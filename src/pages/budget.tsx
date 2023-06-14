@@ -1,6 +1,6 @@
 /* eslint-disable */
 /* elint-disable */
-import { Card, Text, Stack } from '@chakra-ui/react'
+import { Card, Text, Stack, Heading } from '@chakra-ui/react'
 import React from 'react'
 
 const budget = () => {
@@ -10,17 +10,17 @@ const budget = () => {
         <Card
     height="full"
     position="unset">
-          <Text>BUDGET</Text>
+          <Heading>Budget</Heading>
         </Card>
         <Card
     height="full"
     position="unset">
-          <Text>BUDGET</Text>
+          <Heading>Budget</Heading>
         </Card>
         <Card
     height="full"
     position="unset">
-          <Text>BUDGET</Text>
+          <Heading>Budget</Heading>
         </Card>
       </Stack>
     </Stack>

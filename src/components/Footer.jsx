@@ -74,7 +74,8 @@ const Footer = () => {
       };
 
   return (
-    <HStack
+    <>
+    {!!isSignedIn && (<HStack
     display="flex"
     position="sticky"
     bottom="0"
@@ -82,10 +83,9 @@ const Footer = () => {
     backgroundColor="white"
     p={1}
     boxShadow="dark-lg"
-  >
+  > 
+    <Link href="/">
      <VStack p={3} alignItems="center"justifyItems="center" spacing={2}>
-      {!!isSignedIn && (
-        <>
         <Button
           h={0}
           backgroundColor="white"
@@ -94,18 +94,13 @@ const Footer = () => {
         >
           <HomeIcon className="w-5 h-5 text-brd-red" />
         </Button>
-        <Link href="/">
         <VStack spacing={1.5}>
         <Text textColor="#e9041e" h={1} fontSize={11}>Home</Text>
         <Text textColor="#e9041e" h={1} fontSize={11}></Text>
         </VStack>
-        </Link>
-        </>
-      )}
       </VStack>
+      </Link>
     <VStack p={3} alignItems="center"justifyItems="center" spacing={2}>
-      {!!isSignedIn && (
-        <>
         <Button
           h={0}
           backgroundColor="white"
@@ -119,8 +114,6 @@ const Footer = () => {
         <Text textColor="#e9041e" h={1} fontSize={11}>New</Text>
         <Text textColor="#e9041e" h={1} fontSize={11}>Investment</Text>
         </VStack>
-        </>
-      )}
       <Drawer isOpen={isOpen} placement="bottom" onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent>
@@ -197,9 +190,8 @@ const Footer = () => {
         </DrawerContent>
       </Drawer>
     </VStack>
+    <Link href="/budget">
     <VStack p={3} alignItems="center"justifyItems="center" spacing={2}>
-      {!!isSignedIn && (
-        <>
         <Button
           h={0}
           backgroundColor="white"
@@ -208,17 +200,14 @@ const Footer = () => {
         >
           <ChartBarSquareIcon className="w-5 h-5 text-brd-red" />
         </Button>
-        <Link href="/budget">
         <VStack spacing={1.5}>
         <Text textColor="#e9041e" h={1} fontSize={11}>Budget</Text>
         <Text textColor="#e9041e" h={1} fontSize={11}>Dashboard</Text>
         </VStack>
-        </Link>
-        </>
-      )}
       </VStack>
+      </Link>
   </HStack>
-  )
-}
+    )}</>
+)}
 
 export default Footer
