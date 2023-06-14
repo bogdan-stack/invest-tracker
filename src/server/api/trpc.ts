@@ -22,9 +22,6 @@ interface UserProps {
   user: User | null;
 }
 
-export const createContextInner =async ({user}: UserProps) => {
-return {user}
-}
 /**
  * This is the actual context you will use in your router. It will be used to process every request
  * that goes through your tRPC endpoint.
