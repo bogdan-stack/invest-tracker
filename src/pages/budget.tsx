@@ -20,12 +20,18 @@ import {
   Button,
   Divider,
   AbsoluteCenter,
+  StackDivider,
 } from "@chakra-ui/react";
+import {DeleteIcon } from "@chakra-ui/icons";
 import React from "react";
+import { useState } from "react";
 import Footer from "~/components/Footer";
 import { api } from "~/utils/api";
+import { date } from "zod";
 
 const budget = () => {
+  const ctx = api.useContext();
+
   const { data: monthBudget } = api.example.getIncomeMonthly.useQuery();
   const totalMonthlyBudget =
     monthBudget?.[0]?._sum.transactionAmount?.toString();
@@ -33,6 +39,12 @@ const budget = () => {
   const { data: currentExpense } = api.example.getExpenseMonthly.useQuery();
   const totalMonthlyExpense =
     currentExpense?.[0]?._sum.transactionAmount?.toString();
+
+  const { data } = api.example.getAllExpenses.useQuery();
+
+  const [inputExpenseName, setInputExpenseName] = useState("");
+  const [inputExpenseAmount, setInputExpenseAmount] = useState("");
+  const [inputExpenseType, setInputExpenseType] = useState("");
 
   const currentBudget =
     Number(totalMonthlyBudget) - Number(totalMonthlyExpense);
@@ -45,6 +57,15 @@ const budget = () => {
 
   const percentExpenses =
     100 - (Number(currentBudget) / Number(totalMonthlyBudget)) * 100;
+
+  const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  const d = new Date();
+
+  const { mutate, isLoading: isPosting } = api.example.createExpenses.useMutation({
+    onSuccess: () => {
+      void ctx.example.getAllExpenses.invalidate();
+    },
+  });
 
   return (
     <>
@@ -80,10 +101,8 @@ const budget = () => {
                     value={percentBudget}
                     color="whatsapp.500"
                     thickness="16px"
+                    position="unset"
                   >
-                    <CircularProgressLabel fontWeight="bold" fontSize={16}>
-                      {percentBudget.toFixed(2)} %{" "}
-                    </CircularProgressLabel>
                   </CircularProgress>
                   <HStack
                     display="flex"
@@ -121,6 +140,7 @@ const budget = () => {
                         value={percentBudget}
                         color="red"
                         thickness="17px"
+                        position="unset"
                       ></CircularProgress>
                       <VStack spacing={0} alignItems="flex-start">
                         <Text textColor="black" fontWeight="medium">
@@ -153,6 +173,7 @@ const budget = () => {
                         value={percentBudget}
                         color="orange"
                         thickness="17px"
+                        position="unset"
                       ></CircularProgress>
                       <VStack spacing={0} alignItems="flex-start">
                         <Text textColor="black" fontWeight="medium">
@@ -185,6 +206,7 @@ const budget = () => {
                         value={percentBudget}
                         color="whatsapp.500"
                         thickness="17px"
+                        position="unset"
                       ></CircularProgress>
                       <VStack spacing={0} alignItems="flex-start">
                         <Text textColor="black" fontWeight="medium">
@@ -208,7 +230,7 @@ const budget = () => {
               </HStack>
             </CardBody>
           </Card>
-          <Card>
+          <Card position="unset">
             <CardHeader
               paddingTop="20px"
               paddingBottom={0}
@@ -224,7 +246,7 @@ const budget = () => {
                     <Text>
                       Total expenses
                       <Badge fontSize="1em" ml={1} colorScheme="red">
-                        - 500 RON
+                        {totalMonthlyExpense} RON
                       </Badge>
                     </Text>
                   </Box>
@@ -238,15 +260,25 @@ const budget = () => {
                 </Box>
                 <Flex direction="row" justifyContent="center">
                   <Text fontSize={14} variant="outline">Expense Name</Text>
-                  <Input focusBorderColor="black" />
+                  <Input
+                  focusBorderColor="black"
+                  value={inputExpenseName}
+                  onChange={(e) => setInputExpenseName(e.target.value)} />
                 </Flex>
                 <Flex direction="row">
                   <Text fontSize={14} variant="outline">Expense Amount</Text>
-                  <Input type="number" focusBorderColor="black" />
+                  <Input
+                  type="number"
+                  focusBorderColor="black"
+                  value={inputExpenseAmount}
+                  onChange={(e) => setInputExpenseAmount(e.target.value)} />
                 </Flex>
                 <Flex>
                   <Text fontSize={14}>Expense Type</Text>
-                  <Select focusBorderColor="black">
+                  <Select
+                  focusBorderColor="black"
+                  value={inputExpenseType}
+                  onChange={(e) => setInputExpenseType(e.target.value)}>
                     <option id="need" value="Needs">
                       Needs
                     </option>
@@ -264,11 +296,53 @@ const budget = () => {
                     backgroundColor="#e9041e"
                     textColor="white"
                     type="submit"
+                    onClick={()=>mutate({
+                      transactionName: inputExpenseName,
+                      transactionAmount: Number(inputExpenseAmount),
+                      transactionTag: inputExpenseType,
+                      transactionMonth: month[d.getMonth()] ?? "",
+                      transactionType: "Expense",
+                      transactionAt: new Date()
+                    })}
                   >
                     Submit
                   </Button>
                 </Flex>
-                <Divider />
+                <Box position="relative" padding={4}>
+                  <Divider />
+                  <AbsoluteCenter bg="white" px="4">
+                    Expenses List:
+                  </AbsoluteCenter>
+                </Box>
+                <Stack divider={<StackDivider />} spacing="3">
+                            {data?.map((budget) => (
+                              <>
+                              <HStack justifyContent="space-between"
+                                textAlign="center" id={budget.transactionId}>
+                                <Text textColor="black" fontWeight="medium">
+                                  {budget.transactionName}
+                                </Text>
+                                <Text textColor="gray.500">
+                                  {budget.transactionAmount} RON
+                                </Text>
+                                <Badge colorScheme={
+                                  budget.transactionTag === "Needs" ? "red"
+                                  : budget.transactionTag === "Wants"? "orange"
+                                  : budget.transactionTag === "Savings"? "green" : "gray"}>
+                                  {budget.transactionTag}
+                                </Badge>
+                                <Text textColor="gray.500">
+                                  {budget.transactionAt.toDateString()}
+                                </Text>
+                                <Button
+                                  position="unset"
+                                  backgroundColor="white">
+                                  <DeleteIcon position="unset" textColor="#e9041e" />
+                                </Button>
+                              </HStack>
+                              </>
+                            ))}
+                </Stack>
               </Stack>
             </CardBody>
           </Card>

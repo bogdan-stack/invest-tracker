@@ -30,8 +30,9 @@ model Budget {
     userId String
     transactionType String
     transactionAmount Float @default(0)
-    transactionAt DateTime
+    transactionAt DateTime  @default(now())
     transactionMonth String @default("")
     transactionTag String @default("")
+    transactionName String @default("")
 
 }
