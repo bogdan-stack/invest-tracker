@@ -16,11 +16,20 @@ model Post {
     lastName  String  @default("")
     createdAt DateTime @default(now())
 
-    investAt   DateTime @default(now())
+    investAt   DateTime
     investAmount Float     @default(0)
     ufValue      Float     @default(0)
     nrUf         Float     @default(0)
     fondName     String  @default("")
 
     userId       String
+}
+
+model Budget {
+    transactionId  String @id @default(cuid())
+    userId String
+    transactionType String
+    transactionAmount Float @default(0)
+    transactionAt DateTime
+
 }

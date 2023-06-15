@@ -6,7 +6,7 @@ import "~/styles/globals.css";
 import { Source_Sans_Pro } from '@next/font/google';
 import { motion, AnimatePresence } from "framer-motion";
 import Navbtn from "~/components/Navbtn";
-import Footer from "~/components/Footer";
+
 
 
 const sourceSans = Source_Sans_Pro({
@@ -29,7 +29,6 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     <ClerkProvider {...pageProps}>
       <Navbtn />
       <Component {...pageProps} />
-      <Footer />
     </ClerkProvider>
     </ChakraProvider>
     </motion.div>

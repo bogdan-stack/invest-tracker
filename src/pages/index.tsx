@@ -2,7 +2,7 @@
 /* elint-disable */
 
 import { type NextPage } from "next";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Head from "next/head";
 import { SignIn, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import {
@@ -43,7 +43,7 @@ import {
   XCircleIcon,
 } from "@heroicons/react/24/solid";
 import { motion } from "framer-motion";
-import { Main } from "next/document";
+import Footer from "~/components/Footer";
 
 const Home: NextPage = () => {
   const [infoUfVal, setInfo] = useState<string>("");
@@ -147,7 +147,18 @@ const Home: NextPage = () => {
     setLiveSwitch(true);
   };
 
-  if (!userLoaded) return <div />;
+  useEffect(() => {
+    const fetchData = async () => {
+      await getInfo();
+    };
+    fetchData();
+  }, []);
+
+  if (!userLoaded) return (
+  <div>
+    <h1>Sorry!</h1>
+  </div>
+  )
 
   return (
     <>
@@ -156,9 +167,9 @@ const Home: NextPage = () => {
         <meta name="description" content="Investment Tracker App" />
         <link rel="icon" href="/ico_logo-mob.svg" />
       </Head>
-        <Stack>
+        <Stack height="100vh" backgroundColor="#fafafa">
         <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
-        <Stack  backgroundColor="#fafafa" display="flex" flexDirection="column">
+        <Stack  height="100vh" backgroundColor="#fafafa" display="flex" flexDirection="column">
           <motion.div variants={container} initial="hidden" animate="visible">
             <Stack justifyContent="center" p={3}>
               {!!isSignedIn && (
@@ -184,8 +195,7 @@ const Home: NextPage = () => {
                   </CardHeader>
                   <CardBody>
                     <motion.div variants={item}>
-                      <Stack divider={<StackDivider />} spacing="3">
-                        {liveSwitch == false && (
+                        {!infoDataCotatie && (
                           <Stack padding={0}>
                             <Skeleton height="15px" />
                             <Skeleton height="15px" />
@@ -193,10 +203,14 @@ const Home: NextPage = () => {
                             <Skeleton height="15px" />
                           </Stack>
                         )}
-                        {liveSwitch == true && (
+                        { infoDataCotatie && (
                           <>
                             <motion.div variants={item}>
                               <Text textAlign="center">{infoDataCotatie}</Text>
+                              <VStack
+                              divider={<StackDivider borderColor="gray.200"/>}
+                              justifyItems="space-between"
+                              alignItems="stretch">
                               <HStack
                                 justifyContent="space-between"
                                 textAlign="left"
@@ -235,18 +249,10 @@ const Home: NextPage = () => {
                                   {parseFloat(infoUfVal2)} RON
                                 </Text>
                               </HStack>
+                              </VStack>
                             </motion.div>
                           </>
                         )}
-                        <Button
-                          backgroundColor="#e9041e"
-                          textColor="white"
-                          onClick={getInfo}
-                          position="unset"
-                        >
-                          Live Feed
-                        </Button>
-                      </Stack>
                     </motion.div>
                   </CardBody>
                 </Card>
@@ -290,7 +296,7 @@ const Home: NextPage = () => {
                                 </Text>
                                 <Text textColor="gray.500">
                                   {" "}
-                                  {post.createdAt.toDateString()}{" "}
+                                  {post.investAt.toDateString()}{" "}
                                 </Text>
                                 <Button
                                   position="unset"
@@ -570,11 +576,17 @@ const Home: NextPage = () => {
                   </Card>
                 </motion.div>
               )}
+              
             </Stack>
+            
           </motion.div>
+          <Footer />
         </Stack>
+        
       </Stack>
+      
     </>
+    
   );
 };
 

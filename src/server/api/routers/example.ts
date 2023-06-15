@@ -46,6 +46,7 @@ export const exampleRouter = createTRPCRouter({
   create: privateProcedure.input(z.object({
     fondName: z.string(),
     investAmount: z.number(),
+    investAt: z.date(),
     nrUf: z.number(),
     ufValue: z.number(),
   })).mutation(async ({ctx, input}) => {
@@ -57,6 +58,7 @@ export const exampleRouter = createTRPCRouter({
         firstName: ctx.user?.firstName?.toString(),
         fondName: input.fondName,
         investAmount: input.investAmount,
+        investAt: input.investAt,
         nrUf: parseFloat(input.nrUf.toFixed(4)),
         ufValue: parseFloat(input.ufValue.toFixed(4)),
       },

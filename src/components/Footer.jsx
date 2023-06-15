@@ -19,6 +19,7 @@ const Footer = () => {
     const [infoDataCotatie, setInfoDataCotatie] = useState("");
     const { isLoaded: userLoaded, isSignedIn } = useUser();
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const [inputDate, setInputDate ] = useState(new Date());
     const [inputAmount, setInputAmount] = useState(0);
     const [inputFond, setInputFond] = useState("");
     const ctx = api.useContext();
@@ -83,7 +84,7 @@ const Footer = () => {
     backgroundColor="white"
     p={1}
     boxShadow="dark-lg"
-  > 
+  >
     <Link href="/">
      <VStack p={3} alignItems="center"justifyItems="center" spacing={2}>
         <Button
@@ -130,6 +131,9 @@ const Footer = () => {
                   type="date"
                   focusBorderColor="black"
                   defaultValue={new Date().toISOString().slice(0, 10)}
+                  onChange={(e) =>
+                    setInputDate(e.target.valueAsDate ?? new Date())
+                  }
                 />
               </Box>
               <Box>
@@ -177,6 +181,7 @@ const Footer = () => {
                 mutate({
                   investAmount: inputAmount ?? 0,
                   fondName: inputFond,
+                  investAt: inputDate,
                   nrUf: Number(calculateUf()),
                   ufValue: Number(ufValue()),
                 });
