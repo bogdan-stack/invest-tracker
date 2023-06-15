@@ -11,6 +11,15 @@ import {
   VStack,
   CardHeader,
   CardBody,
+  Flex,
+  Box,
+  Badge,
+  Input,
+  Progress,
+  Select,
+  Button,
+  Divider,
+  AbsoluteCenter,
 } from "@chakra-ui/react";
 import React from "react";
 import Footer from "~/components/Footer";
@@ -33,6 +42,9 @@ const budget = () => {
   const budgetNeeds = Number(totalMonthlyBudget) * (50 / 100);
   const budgetWants = Number(totalMonthlyBudget) * (30 / 100);
   const budgetSavings = Number(totalMonthlyBudget) * (20 / 100);
+
+  const percentExpenses =
+    100 - (Number(currentBudget) / Number(totalMonthlyBudget)) * 100;
 
   return (
     <>
@@ -78,14 +90,14 @@ const budget = () => {
                     justifyItems="center"
                     alignItems="center"
                   >
-                    <Text
-                      alignItems="flex-end"
-                      fontWeight="bold"
-                      fontSize="2xl"
-                    >
+                    <Text alignItems="flex-end" fontWeight="bold" fontSize="20">
                       {currentBudget}
                     </Text>
-                    <Text alignItems="flex-end" fontWeight="normal" fontSize="md">
+                    <Text
+                      alignItems="flex-end"
+                      fontWeight="normal"
+                      fontSize="20"
+                    >
                       / {totalMonthlyBudget} RON
                     </Text>
                   </HStack>
@@ -96,11 +108,12 @@ const budget = () => {
                   spacing={0}
                   alignItems="flex-start"
                 >
-                  <VStack display="flex"
-                  justifyContent="space-between"
-                  spacing={0}
-                  alignItems="flex-start"
-                  p={2}
+                  <VStack
+                    display="flex"
+                    justifyContent="space-between"
+                    spacing={0}
+                    alignItems="flex-start"
+                    p={2}
                   >
                     <HStack>
                       <CircularProgress
@@ -119,19 +132,20 @@ const budget = () => {
                       </VStack>
                     </HStack>
                     <HStack>
-                    <Text textColor="red" fontWeight="semibold">
-                      2300
-                    </Text>
-                    <Text textColor="red" fontWeight="medium">
-                      / {budgetNeeds} RON
-                    </Text>
+                      <Text textColor="black" fontWeight="semibold">
+                        2300
+                      </Text>
+                      <Text textColor="black" fontWeight="medium">
+                        / {budgetNeeds} RON
+                      </Text>
                     </HStack>
                   </VStack>
-                  <VStack display="flex"
-                  justifyContent="space-between"
-                  spacing={0}
-                  alignItems="flex-start"
-                  p={2}
+                  <VStack
+                    display="flex"
+                    justifyContent="space-between"
+                    spacing={0}
+                    alignItems="flex-start"
+                    p={2}
                   >
                     <HStack>
                       <CircularProgress
@@ -150,19 +164,20 @@ const budget = () => {
                       </VStack>
                     </HStack>
                     <HStack>
-                    <Text textColor="orange" fontWeight="semibold">
-                      2300
-                    </Text>
-                    <Text textColor="orange" fontWeight="medium">
-                      / {budgetWants} RON
-                    </Text>
+                      <Text textColor="black" fontWeight="semibold">
+                        2300
+                      </Text>
+                      <Text textColor="black" fontWeight="medium">
+                        / {budgetWants} RON
+                      </Text>
                     </HStack>
                   </VStack>
-                  <VStack display="flex"
-                  justifyContent="space-between"
-                  spacing={0}
-                  alignItems="flex-start"
-                  p={2}
+                  <VStack
+                    display="flex"
+                    justifyContent="space-between"
+                    spacing={0}
+                    alignItems="flex-start"
+                    p={2}
                   >
                     <HStack>
                       <CircularProgress
@@ -181,21 +196,85 @@ const budget = () => {
                       </VStack>
                     </HStack>
                     <HStack>
-                    <Text textColor="whatsapp.500" fontWeight="semibold">
-                      2300
-                    </Text>
-                    <Text textColor="whatsapp.500" fontWeight="medium">
-                      / {budgetSavings} RON
-                    </Text>
+                      <Text textColor="black" fontWeight="semibold">
+                        2300
+                      </Text>
+                      <Text textColor="black" fontWeight="medium">
+                        / {budgetSavings} RON
+                      </Text>
                     </HStack>
                   </VStack>
                 </VStack>
               </HStack>
             </CardBody>
           </Card>
+          <Card>
+            <CardHeader
+              paddingTop="20px"
+              paddingBottom={0}
+              paddingLeft="20px"
+              paddingRight="20px"
+            >
+              <Heading fontSize="md">Monthly Expenses</Heading>
+            </CardHeader>
+            <CardBody>
+              <Stack spacing={4}>
+                <Flex justifyContent="flex-end">
+                  <Box ml="3" justifyItems="flex-start">
+                    <Text>
+                      Total expenses
+                      <Badge fontSize="1em" ml={1} colorScheme="red">
+                        - 500 RON
+                      </Badge>
+                    </Text>
+                  </Box>
+                </Flex>
+                <Progress hasStripe colorScheme="red" value={percentExpenses} />
+                <Box position="relative" padding={4}>
+                  <Divider />
+                  <AbsoluteCenter bg="white" px="4">
+                    Add Expenses:
+                  </AbsoluteCenter>
+                </Box>
+                <Flex direction="row" justifyContent="center">
+                  <Text fontSize={14} variant="outline">Expense Name</Text>
+                  <Input focusBorderColor="black" />
+                </Flex>
+                <Flex direction="row">
+                  <Text fontSize={14} variant="outline">Expense Amount</Text>
+                  <Input type="number" focusBorderColor="black" />
+                </Flex>
+                <Flex>
+                  <Text fontSize={14}>Expense Type</Text>
+                  <Select focusBorderColor="black">
+                    <option id="need" value="Needs">
+                      Needs
+                    </option>
+                    <option id="wants" value="Wants">
+                      Wants
+                    </option>
+                    <option id="savings" value="Savings">
+                      Savings
+                    </option>
+                  </Select>
+                </Flex>
+                <Flex>
+                  <Button
+                    width="100vh"
+                    backgroundColor="#e9041e"
+                    textColor="white"
+                    type="submit"
+                  >
+                    Submit
+                  </Button>
+                </Flex>
+                <Divider />
+              </Stack>
+            </CardBody>
+          </Card>
         </Stack>
+        <Footer />
       </Stack>
-      <Footer />
     </>
   );
 };

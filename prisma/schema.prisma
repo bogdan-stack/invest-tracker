@@ -32,5 +32,6 @@ model Budget {
     transactionAmount Float @default(0)
     transactionAt DateTime
     transactionMonth String @default("")
+    transactionTag String @default("")
 
 }
