@@ -4,12 +4,14 @@ import { z } from "zod";
 import { createTRPCRouter, privateProcedure, publicProcedure } from "~/server/api/trpc";
 
 export const exampleRouter = createTRPCRouter({
+
   hello: publicProcedure
     .query(async({ ctx }) => {
       return{
         greeting: `Hello, ${ ctx.user?.firstName}!`,
       };
     }),
+
   getAll: publicProcedure.query(async ({ ctx }) => {
     const transactii = await ctx.prisma.post.findMany({
       where: {userId: ctx.userId!},
@@ -43,6 +45,33 @@ export const exampleRouter = createTRPCRouter({
         }
     });
   }),
+  getIncomeMonthly: publicProcedure.query(({ ctx }) => {
+    return ctx.prisma.budget.groupBy({
+      by: ['transactionType'],
+        where: {
+          transactionType: 'Income',
+          userId: ctx.userId!,
+          transactionMonth: "May",
+        },
+        _sum: {
+          transactionAmount: true,
+        }
+    });
+}),
+getExpenseMonthly: publicProcedure.query(({ ctx }) => {
+  return ctx.prisma.budget.groupBy({
+    by: ['transactionType'],
+      where: {
+        transactionType: 'Expense',
+        userId: ctx.userId!,
+        transactionMonth: "May",
+      },
+      _sum: {
+        transactionAmount: true,
+      }
+  });
+}),
+
   create: privateProcedure.input(z.object({
     fondName: z.string(),
     investAmount: z.number(),
@@ -71,4 +100,7 @@ delete: privateProcedure.input(z.string()).mutation(async ({ ctx, input }) => {
     },
   });
 }),
+
+
+
 });
