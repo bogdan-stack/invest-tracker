@@ -32,8 +32,8 @@ const Footer = () => {
       });
 
       const getInfo = async () => {
-        //const res = await fetch('https://invest-tracker-nine.vercel.app/api/trpc/getInfo')
-        const res = await fetch("http://localhost:3000/api/trpc/getInfo");
+        const res = await fetch('https://invest-tracker-nine.vercel.app/api/trpc/getInfo')
+        //const res = await fetch("http://localhost:3000/api/trpc/getInfo");
         const {
           infoUfVal,
           infoFoName,
