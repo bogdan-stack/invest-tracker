@@ -309,7 +309,7 @@ const budget = () => {
                     </HStack>
                     <HStack>
                       <Text textColor="gray.500" fontSize={12}>
-                        Ramas : {difWants} RON
+                        Ramas : {difWants.toFixed(1)} RON
                       </Text>
                     </HStack>
                   </VStack>
