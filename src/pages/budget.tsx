@@ -464,20 +464,20 @@ const budget = () => {
                   </AbsoluteCenter>
                 </Box>
                 {hasData ? (
-                  <Stack divider={<StackDivider />} spacing="3">
+                  <Stack divider={<StackDivider />} spacing="2">
                     {data?.map((budget) => (
                       <div key={budget.transactionId}>
                         <HStack
                           justifyContent="space-between"
-                          textAlign="center"
+                          justifyItems="flex-start"
+                          justifySelf="center"
+                          textAlign="left"
+                          spacing={1}
                         >
+                          <VStack alignItems="flex-start">
                           <Text textColor="black" fontWeight="medium">
                             {budget.transactionName}
-                          </Text>
-                          <Text textColor="gray.500">
-                            {budget.transactionAmount} RON
-                          </Text>
-                          <Badge
+                            <Badge margin={2} alignContent="flex-start"
                             colorScheme={
                               budget.transactionTag === "Needs"
                                 ? "red"
@@ -490,12 +490,19 @@ const budget = () => {
                           >
                             {budget.transactionTag}
                           </Badge>
+                          </Text>
+                          <Text margin="-0.5" textColor="gray.500">
+                            {budget.transactionAmount} RON
+                          </Text>
+                          </VStack>
+                          <Stack direction="row" justifyItems="flex-start" spacing="1">
                           <Text textColor="gray.500">
                             {budget.transactionAt.toDateString()}
                           </Text>
                           <Button position="unset" backgroundColor="white" onClick={()=>mutateDelete(budget.transactionId)}>
                             <DeleteIcon position="unset" textColor="#e9041e" />
                           </Button>
+                          </Stack>
                         </HStack>
                       </div>
                     ))}
