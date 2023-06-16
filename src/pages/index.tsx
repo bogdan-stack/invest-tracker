@@ -44,6 +44,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { motion } from "framer-motion";
 import Footer from "~/components/Footer";
+import Navbtn from "~/components/Navbtn";
 
 const Home: NextPage = () => {
   const [infoUfVal, setInfo] = useState<string>("");
@@ -167,6 +168,7 @@ const Home: NextPage = () => {
         <meta name="description" content="Investment Tracker App" />
         <link rel="icon" href="/ico_logo-mob.svg" />
       </Head>
+        <Navbtn />
         <Stack height="100vh" backgroundColor="#fafafa">
         <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
         <Stack  height="100vh" backgroundColor="#fafafa" display="flex" flexDirection="column">
@@ -281,10 +283,10 @@ const Home: NextPage = () => {
                         <motion.div variants={item}>
                           <Stack divider={<StackDivider />} spacing="3">
                             {data?.map((post) => (
+                              <div key={post.id}>
                               <HStack
                                 justifyContent="space-between"
                                 textAlign="center"
-                                key={post.id}
                               >
                                 <Text textColor="black" fontWeight="medium">
                                   {" "}
@@ -308,6 +310,7 @@ const Home: NextPage = () => {
                                   <DeleteIcon position="unset" textColor="#e9041e" />
                                 </Button>
                               </HStack>
+                              </div>
                             ))}
                           </Stack>
                         </motion.div>
@@ -349,9 +352,8 @@ const Home: NextPage = () => {
                               >
                                 <motion.div variants={item}>
                                 {sumActiuni?.map((item) => (
-                                  <>
+                                  <div key={item.fondName}>
                                     <Text
-                                      key={item.fondName}
                                       textColor="black"
                                       fontSize="15"
                                       fontWeight="medium"
@@ -361,12 +363,11 @@ const Home: NextPage = () => {
                                     <Text textColor="gray.500" fontSize="2xl">
                                       {item._sum.investAmount} RON
                                     </Text>
-                                  </>
+                                  </div>
                                 ))}
                                 {sumActiuni?.map((item) => (
-                                  <>
+                                  <div key={item.fondName}>
                                     <Text
-                                      key={item.fondName}
                                       textColor="black"
                                       fontSize="15"
                                       fontWeight="medium"
@@ -376,7 +377,7 @@ const Home: NextPage = () => {
                                     <Text textColor="gray.500" fontSize="2xl">
                                       {item._sum.nrUf?.toFixed(4)} U.F.
                                     </Text>
-                                  </>
+                                  </div>
                                 ))}
                                 </motion.div>
                               </VStack>

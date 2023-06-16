@@ -27,7 +27,6 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         >
     <ChakraProvider>
     <ClerkProvider {...pageProps}>
-      <Navbtn />
       <Component {...pageProps} />
     </ClerkProvider>
     </ChakraProvider>
