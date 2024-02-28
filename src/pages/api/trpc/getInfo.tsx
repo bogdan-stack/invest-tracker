@@ -11,15 +11,15 @@ const getInfo = async (req: NextApiRequest, res: NextApiResponse) => {
   const dom = new JSDOM(html);
   const document = dom.window.document;
 
-  const dataCotatie = document.querySelector('div[titlu_view="BRD Simfonia"]')
+  const dataCotatie = document.querySelector('div[titlu_view="BRD Simfonia "]')
   let infoDataCotatie = dataCotatie.getAttribute('data_view')
 
-  const divSim = document.querySelector('div[titlu_view="BRD Simfonia"]')
+  const divSim = document.querySelector('div[titlu_view="BRD Simfonia "]')
   let infoUfVal2 = divSim.getAttribute('cotatie_view')
   infoUfVal2 = parseFloat(infoUfVal2.replace(',','.').trim())
   const infoFoName2 = divSim.getAttribute('titlu_view')
 
-  const divAct = document.querySelector('div[titlu_view="BRD Actiuni Clasa A"]')
+  const divAct = document.querySelector('div[titlu_view="BRD Actiuni Clasa A "]')
   let infoUfVal = divAct.getAttribute('cotatie_view')
   infoUfVal = parseFloat(infoUfVal.replace(',','.').trim())
   const infoFoName = divAct.getAttribute('titlu_view')
